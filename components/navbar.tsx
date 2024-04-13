@@ -8,7 +8,6 @@ const navigation = [
   { name: '대시보드', href: '#', current: true },
   { name: '팀 소개', href: '#', current: false },
   { name: 'AI 분석', href: '#', current: false },
-  { name: '챗봇', href: '#', current: false },
 ]
 
 function classNames(...classes: string[]) {
