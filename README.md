@@ -9,7 +9,11 @@
     오픈소스 아이콘 라이브러리
 
 구현 사항
-- 대시보드
+- Dashboard
 - Navbar
 - Footer
+- Headline
+
+구현 예정
+- 헤드라인 기사 요약 팝오버 Hover
 

@@ -1,56 +1,8 @@
-const posts = [
-    {
-        id: 1,
-        title: '기사 제목',
-        href: '#',
-        description:
-            '기사내용',
-        date: '2024년 4월 12일',
-        datetime: '2024-04-12',
-        category: { title: '정치', href: '#' },
-        author: {
-            name: '기자',
-            role: '언론사',
-            href: '#',
-            imageUrl:
-                'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-    },
-    {
-        id: 2,
-        title: '기사 제목',
-        href: '#',
-        description:
-            '기사내용',
-        date: '2024년 4월 12일',
-        datetime: '2024-04-12',
-        category: { title: '정치', href: '#' },
-        author: {
-            name: '기자',
-            role: '언론사',
-            href: '#',
-            imageUrl:
-                'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-    },
-    {
-        id: 3,
-        title: '기사 제목',
-        href: '#',
-        description:
-            '기사내용',
-        date: '2024년 4월 12일',
-        datetime: '2024-04-12',
-        category: { title: '정치', href: '#' },
-        author: {
-            name: '기자',
-            role: '언론사',
-            href: '#',
-            imageUrl:
-                'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-    },
-]
+'use client'
+
+import { Popover, Transition } from "@headlessui/react"
+import { posts } from "../scripts/posts"
+import { Fragment } from "react"
 
 
 export default function Headline() {
@@ -63,46 +15,70 @@ export default function Headline() {
                         지금 이슈가 되는 기사들을 분석해보세요.
                     </p>
                 </div>
-                <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-4 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                     {posts.map((post) => (
                         <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
-                            <div className="flex items-center gap-x-4 text-xs">
-                                <time dateTime={post.datetime} className="text-gray-500">
-                                    {post.date}
-                                </time>
-                                <a
-                                    href={post.category.href}
-                                    className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
-                                >
-                                    {post.category.title}
-                                </a>
-                            </div>
-                            <div className="group relative">
-                                <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                                    <a href={post.href}>
-                                        <span className="absolute inset-0" />
-                                        {post.title}
-                                    </a>
-                                </h3>
-                                <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p>
-                            </div>
-                            <div className="relative mt-8 flex items-center gap-x-4">
-                                <img src={post.author.imageUrl} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
-                                <div className="text-sm leading-6">
-                                    <p className="font-semibold text-gray-900">
-                                        <a href={post.author.href}>
-                                            <span className="absolute inset-0" />
-                                            {post.author.name}
+                            <div className="relative flex items-center gap-x-4">
+                                <img src={post.thumbnail} alt="" className="h-40 bg-gray-50" />
+                                <div className="">
+                                    <div className="flex items-center gap-x-4 text-xs">
+                                        <time dateTime={post.datetime} className="text-gray-500">
+                                            {post.date}
+                                        </time>
+                                        <a
+                                            href={post.category.href}
+                                            className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
+                                        >
+                                            {post.category.title}
                                         </a>
-                                    </p>
-                                    <p className="text-gray-600">{post.author.role}</p>
+                                    </div>
+                                    <div className="mt-2 group relative">
+                                        <h3 className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                                            <a href={post.href}>
+                                                <span className="absolute inset-0" />
+                                                {post.title}
+                                            </a>
+                                        </h3>
+                                        <Popover className="relative">
+                                            <Popover.Button className="focus:outline-none">
+                                                <p className="mt-1 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p>
+                                            </Popover.Button>
+                                            <Transition
+                                                as={Fragment}
+                                                enter="transition ease-out duration-200"
+                                                enterFrom="opacity-0 translate-y-1"
+                                                enterTo="opacity-100 translate-y-0"
+                                                leave="transition ease-in duration-150"
+                                                leaveFrom="opacity-100 translate-y-0"
+                                                leaveTo="opacity-0 translate-y-1"
+                                            >
+                                                <Popover.Panel className="p-1.5 absolute z-10 overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5 bg-white">
+                                                    <p className="line-clamp-3 text-sm leading-6 text-gray-600">
+                                                        {post.summary}
+                                                    </p>
+                                                </Popover.Panel>
+                                            </Transition>
+                                        </Popover>
+                                    </div>
+                                    <div className="mt-3 relative flex items-center gap-x-4">
+                                        <img src={post.author.imageUrl} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                                        <div className="text-sm leading-6">
+                                            <p className="font-semibold text-gray-900">
+                                                <a href={post.author.href}>
+                                                    <span className="absolute inset-0" />
+                                                    {post.author.name}
+                                                </a>
+                                            </p>
+                                            <p className="text-gray-600">{post.author.press}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </article>
                     ))}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
