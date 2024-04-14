@@ -11,4 +11,5 @@
 구현 사항
 - 대시보드
 - Navbar
+- Footer
 
