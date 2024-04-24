@@ -1,7 +1,7 @@
 
 export default function Footer() {
     return (
-        <footer className="mx-auto mt-32 w-full max-w-container px-4 sm:px-6 lg:px-8">
+        <footer className="mx-auto mt-16 w-full max-w-container px-4 sm:px-6 lg:px-8">
             <div className="border-t border-slate-900/5 py-10">
                 <svg className="mx-auto h-5 w-auto text-slate-900" aria-hidden="true" viewBox="0 0 160 24" fill="none">
 
