@@ -13,7 +13,13 @@
 - Navbar
 - Footer
 - Headline
+- ChatBot
+- Login
 
 구현 예정
 - 헤드라인 기사 요약 팝오버 Hover
+- 소셜 로그인
+
+참조
+- 카카오 로그인: https://data-jj.tistory.com/53
 
