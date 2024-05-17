@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 
 
 const inter = Inter({ subsets: ["latin"] });
-inter.className = "h-full";
 
 export const metadata: Metadata = {
   title: "AI-NES",
@@ -21,7 +20,6 @@ export default function LoginLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <Footer/>
       </body>
     </html>
   );

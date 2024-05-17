@@ -3,10 +3,29 @@
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image';
 import { KakaoAuthUri } from "@/scripts/login_kakao";
+import { FirebaseAuth } from '@/scripts/login_firebase';
+import { useState } from 'react';
+import { GoogleAuthProvider, User, signInWithPopup } from 'firebase/auth';
+
 
 export default function KakaoLogin() {
     const params = useSearchParams();
-    const authCode = params.get('code');
+    const KakaoAuthCode = params.get('code');
+
+    const [userData, setUserData] = useState<User>();
+
+    function GoogleLoginHandler() {
+        const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+        signInWithPopup(FirebaseAuth, provider) // popup을 이용한 signup
+        .then((data) => {
+            setUserData(data.user); // user data 설정
+            console.log(data) // console로 들어온 데이터 표시
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+    
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -70,13 +89,22 @@ export default function KakaoLogin() {
                         </button>
                         <a
                             href={KakaoAuthUri}
-                            className="relative flex w-full h-10 justify-center items-center rounded-md bg-indigo-600 mt-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="relative flex w-full h-10 mx-auto justify-center items-center rounded-md mt-2"
                         >
-                            <div className="relative w-full h-full">
+                            <div className="relative w-full h-full flex justify-center items-center">
                                 <Image src="/images/kakao_login_large_wide.png" alt="Kakao Login" layout="fill" objectFit="contain"/>
                             </div>
                         </a>
-                        <p className="mt-2">인가 코드: {authCode}</p>
+                        <button
+                            className="relative flex w-full h-10 mx-auto justify-center items-center rounded-md mt-2"
+                            onClick={GoogleLoginHandler}
+                        >
+                            <div className="relative w-full h-full flex justify-center items-center">
+                                <Image src="/images/google_login_SI.png" alt="Google Login" layout="fill" objectFit="contain"/>
+                            </div>
+                        </button>
+                        <p className="mt-2">카카오 인가 코드: {KakaoAuthCode}</p>
+                        <p className="mt-2">구글 유저네임: {userData? userData.displayName : null}</p>
                     </div>
                 </form>
 
