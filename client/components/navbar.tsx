@@ -3,7 +3,8 @@
 import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
-import LoginModal from "./loginmodal";
+import { usePathname } from 'next/navigation'
+import LoginModal from "./login_modal";
 
 const navigation = [
   { name: '대시보드', href: './', current: true },
@@ -17,6 +18,13 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+  const currentPath = usePathname();
+  const navigation = [
+    { name: '대시보드', href: './', current: currentPath == "/" ? true : false },
+    { name: '팀 소개', href: '#', current: currentPath == "/about" ? true : false },
+    { name: 'AI 분석', href: '#', current: currentPath == "/analyze" ? true : false },
+    { name: '챗봇', href: './chatbot', current: currentPath == "/chatbot" ? true : false }
+  ]
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
@@ -128,7 +136,7 @@ export default function Navbar() {
               ))}
             </div>
           </Disclosure.Panel>
-          <LoginModal open={isLoginOpen} setOpen={setIsLoginOpen}/>
+          <LoginModal open={isLoginOpen} setOpen={setIsLoginOpen} />
         </>
       )}
 
