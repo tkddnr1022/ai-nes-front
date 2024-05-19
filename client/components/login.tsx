@@ -96,6 +96,7 @@ export default function Login() {
                             </div>
                         </a>
                         <button
+                            type="button"
                             className="relative flex w-full h-10 mx-auto justify-center items-center rounded-md mt-2"
                             onClick={GoogleLoginHandler}
                         >
