@@ -1,4 +1,3 @@
-
 export default function Dashboard() {
     return (
         <div className="relative isolate overflow-hidden bg-white ">

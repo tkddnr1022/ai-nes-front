@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "AI-NES",
   description: "OSS Project",
+  icons:{
+    icon: "favicon.ico"
+  }
 };
 
 export default function RootLayout({
