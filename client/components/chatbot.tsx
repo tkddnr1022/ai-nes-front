@@ -36,9 +36,8 @@ const Chatbot: React.FC = () => {
 
 
   return (
-    <div className='mt-6 mx-auto max-w-4xl px-12 lg:px-24 h-screen'>
-      <div className='h-full'> {/* Border 구현 예정 */}
-        <ul role="list" className="relative overflow-y-auto h-4/5">
+    <div className='mt-6 mx-auto max-w-4xl px-6 lg:px-12 h-[75vh]'>
+        <ul role="list" className="relative overflow-y-auto h-full">
           {messages.map((message, index) => (
             <li key={index} className="flex justify-between gap-x-6 py-5">
               <div className="flex min-w-0 gap-x-4">
@@ -93,7 +92,6 @@ const Chatbot: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   )
 }
