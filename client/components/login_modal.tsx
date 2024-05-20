@@ -1,4 +1,3 @@
-// components/LoginModal.tsx
 'use client'
 
 import { Fragment, useRef } from 'react'

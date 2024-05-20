@@ -1,9 +1,9 @@
-"use client"
+
 
 import Login from "@/components/login";
 
 
-export default function KakaoLogin() {
+export default function SignIn() {
     return (
        <Login />
     )
