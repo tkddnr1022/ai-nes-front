@@ -36,7 +36,7 @@ const Chatbot: React.FC = () => {
 
 
   return (
-    <div className='mt-6 mx-auto max-w-4xl px-6 lg:px-12 h-[75vh]'>
+    <div className='mt-6 mx-auto max-w-4xl px-6 lg:px-12 h-[80vh]'>
         <ul role="list" className="relative overflow-y-auto h-full">
           {messages.map((message, index) => (
             <li key={index} className="flex justify-between gap-x-6 py-5">
@@ -92,6 +92,10 @@ const Chatbot: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className="text-center">
+          <p className="mt-5 text-xs text-gray-400">챗봇 정보</p>
+        </div>
+        
     </div>
   )
 }

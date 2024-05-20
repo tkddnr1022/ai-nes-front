@@ -11,14 +11,14 @@ export default function SignIn() {
   const [agreed, setAgreed] = useState(false)
 
   return (
-    <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div className="isolate bg-white px-16 py-20 pb-32 lg:px-20">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">회원가입</h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
           AI-NES에 가입하여 더 편리한 서비스를 제공받으세요.
         </p>
       </div>
-      <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form action="#" method="POST" className="mx-auto mt-8 max-w-xl">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">

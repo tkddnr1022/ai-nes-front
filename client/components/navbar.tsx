@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import { usePathname } from 'next/navigation'
 import LoginModal from "./login_modal";
 
@@ -14,9 +14,7 @@ export default function Navbar() {
   const currentPath = usePathname();
   const navigation = [
     { name: '대시보드', href: './', current: currentPath == "/" ? true : false },
-    { name: '팀 소개', href: '#', current: currentPath == "/about" ? true : false },
-    { name: 'AI 분석', href: '#', current: currentPath == "/analyze" ? true : false },
-    { name: '챗봇', href: './chatbot', current: currentPath == "/chatbot" ? true : false }
+    { name: '팀 소개', href: './about', current: currentPath == "/about" ? true : false }
   ]
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -91,7 +89,7 @@ export default function Navbar() {
                             onClick={() => setIsLoginOpen(true)}
                             className={classNames(active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
-                            Sign in
+                            로그인
                           </button>
                         )}
                       </Menu.Item>
