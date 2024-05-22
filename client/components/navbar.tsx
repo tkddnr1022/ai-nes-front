@@ -5,19 +5,21 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import { usePathname } from 'next/navigation'
 import LoginModal from "./login_modal";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
+import classNames from 'classnames'
 
 export default function Navbar() {
   const currentPath = usePathname();
   const navigation = [
-    { name: '대시보드', href: './', current: currentPath == "/" ? true : false },
+    { name: '대시보드', href: '/', current: currentPath == "/" ? true : false },
     { name: '팀 소개', href: './about', current: currentPath == "/about" ? true : false }
   ]
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLogined, setIsLogined] = useState(false);
+
+  function Logout() {
+    setIsLogined(false);
+  }
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -87,9 +89,30 @@ export default function Navbar() {
                         {({ active }) => (
                           <button
                             onClick={() => setIsLoginOpen(true)}
-                            className={classNames(active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                            className={classNames(isLogined ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
                             로그인
+                          </button>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a href="#">
+                            <button
+                              className={classNames(!isLogined ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                            >
+                              마이페이지
+                            </button>
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            onClick={Logout}
+                            className={classNames(!isLogined ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                          >
+                            로그아웃
                           </button>
                         )}
                       </Menu.Item>

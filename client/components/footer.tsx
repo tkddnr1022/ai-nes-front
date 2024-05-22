@@ -1,4 +1,3 @@
-
 export default function Footer() {
     return (
         <footer className="mx-auto mt-16 w-full max-w-container px-4 sm:px-6 lg:px-8">

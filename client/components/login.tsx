@@ -2,9 +2,9 @@
 
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image';
-import { KakaoAuthUri } from "@/scripts/login_kakao";
-import { FirebaseAuth } from '@/scripts/login_firebase';
-import { SetStateAction, useState } from 'react';
+import { KakaoAuthUri } from "@/scripts/config_kakao";
+import { FirebaseAuth } from '@/scripts/config_firebase';
+import { useState } from 'react';
 import { GoogleAuthProvider, User, signInWithPopup } from 'firebase/auth';
 import RegisterModal from './register_modal';
 
@@ -12,15 +12,16 @@ import RegisterModal from './register_modal';
 export default function Login() {
     const params = useSearchParams();
     const KakaoAuthCode = params.get('code');
-    const [userData, setUserData] = useState<User>();
-    console.log(`카카오 인가 코드: ${KakaoAuthCode}`);
-    console.log(`구글 이메일: ${userData?.email}`);
+    if(KakaoAuthCode) KakaoLoginHandler();
+
+    function KakaoLoginHandler(){
+        console.log(`카카오 인가 코드: ${KakaoAuthCode}`);
+    }
 
     function GoogleLoginHandler() {
         const provider = new GoogleAuthProvider(); // provider를 구글로 설정
         signInWithPopup(FirebaseAuth, provider) // popup을 이용한 signup
             .then((data) => {
-                setUserData(data.user); // user data 설정
                 console.log(data) // console로 들어온 데이터 표시
             })
             .catch((err) => {

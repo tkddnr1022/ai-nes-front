@@ -5,13 +5,12 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import ChatbotModal from "@/components/chatbot_modal";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "AI-NES",
   description: "OSS Project",
-  icons:{
+  icons: {
     icon: "favicon.ico"
   }
 };
@@ -26,8 +25,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <Navbar />
         {children}
-        <ChatbotModal/>
-        <Footer/>
+        <ChatbotModal />
+        <Footer />
       </body>
     </html>
   );
