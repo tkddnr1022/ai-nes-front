@@ -72,7 +72,7 @@ async function GoogleAuth(): Promise<AuthResult> {
 
 async function NativeAuth(email: string, password: string): Promise<AuthResult> {
     try {
-        console.log(email, password);
+        console.log(email);
 
         // 백엔드로부터 auth 얻는 코드 필요
         const authResult = {

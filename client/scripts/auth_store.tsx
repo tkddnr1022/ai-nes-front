@@ -1,25 +1,30 @@
 import { create } from 'zustand';
-import Cookies from 'js-cookie';
+import { persist } from 'zustand/middleware';
 
 interface AuthState {
     isLoggedIn: boolean;
+    token: string | null;
     setIsLoggedIn: (isLoggedIn: boolean) => void;
-    login: (token: string, expiresIn: number) => void;
+    login: (token: string) => void;
     logout: () => void;
 }
 
-const useAuthStore = create<AuthState>((set) => ({
+const useAuthStore = create(persist<AuthState>((set) => ({
     isLoggedIn: false,
+    token: null,
     setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
-    login: (token, expiresIn) => {
+    login: (t) => {
+        set({ token: t});
         // expiresIn 처리 필요
-        Cookies.set('token', token, { expires: 7 });
         set({ isLoggedIn: true });
     },
     logout: () => {
-        Cookies.remove('token');
+        set({ token: null});
+        // expiresIn 처리 필요
         set({ isLoggedIn: false });
     },
+}), {
+    name: 'authStorage'
 }));
 
 export default useAuthStore;

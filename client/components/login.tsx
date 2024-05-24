@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image';
 import { KakaoAuthUri } from "@/scripts/config_kakao";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RegisterModal from './register_modal';
 import { KakaoAuth, GoogleAuth, NativeAuth } from '@/scripts/api/get_auth';
 import useAuthStore from '@/scripts/auth_store';
@@ -20,7 +20,7 @@ export default function Login() {
     const NativeLoginHandler = async (email: string, password: string) => {
         const authResult = await NativeAuth(email, password);
         if (authResult.success) {
-            login(authResult.token as string, authResult.expiresIn as number);
+            login(authResult.token as string);
             router.push('/');
         }
         else {
@@ -31,7 +31,7 @@ export default function Login() {
     const GoogleLoginHandler = async () => {
         const authResult = await GoogleAuth();
         if (authResult.success) {
-            login(authResult.token as string, authResult.expiresIn as number);
+            login(authResult.token as string);
             router.push('/');
         }
         else {
@@ -42,7 +42,7 @@ export default function Login() {
     const KakaoLoginHandler = async (code: string) => {
         const authResult = await KakaoAuth(code);
         if (authResult.success) {
-            login(authResult.token as string, authResult.expiresIn as number);
+            login(authResult.token as string);
             router.push('/');
         }
         else {
@@ -51,7 +51,11 @@ export default function Login() {
     };
     // code 파라미터 존재시 카카오 인증 진행
     const KakaoAuthCode = useSearchParams().get('code');
-    if (KakaoAuthCode) KakaoLoginHandler(KakaoAuthCode);
+    useEffect(() => {
+        if (KakaoAuthCode) {
+            KakaoLoginHandler(KakaoAuthCode);
+        }
+    }, [KakaoAuthCode]);
 
     return (
         <div>
@@ -68,7 +72,7 @@ export default function Login() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form className="space-y-6" onSubmit={() => NativeLoginHandler(email, password)} method="POST">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 이메일
@@ -113,7 +117,6 @@ export default function Login() {
                         <div>
                             <button
                                 type="submit"
-                                onClick={() => NativeLoginHandler(email, password)}
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 로그인
