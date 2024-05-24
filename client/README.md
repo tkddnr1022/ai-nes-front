@@ -19,6 +19,8 @@ Unstyled CSS 프레임워크
 npm 파이어베이스 패키지
 - classNames
 JSX 클래스명 관리 라이브러리
+- Zustand
+전역 상태 관리 라이브러리
 
 ## 컴포넌트
 
