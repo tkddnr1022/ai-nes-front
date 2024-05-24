@@ -3,9 +3,10 @@
 import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import LoginModal from "./login_modal";
 import classNames from 'classnames'
+import useAuthStore from '@/scripts/auth_store'
 
 export default function Navbar() {
   const currentPath = usePathname();
@@ -14,11 +15,13 @@ export default function Navbar() {
     { name: '팀 소개', href: './about', current: currentPath == "/about" ? true : false }
   ]
 
+  const { isLoggedIn, logout } = useAuthStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isLogined, setIsLogined] = useState(false);
-
-  function Logout() {
-    setIsLogined(false);
+  const router = useRouter();
+  function LogoutHandler() {
+    // 백엔드에 로그아웃 전달 필요
+    logout();
+    router.push('/');
   }
 
   return (
@@ -89,7 +92,7 @@ export default function Navbar() {
                         {({ active }) => (
                           <button
                             onClick={() => setIsLoginOpen(true)}
-                            className={classNames(isLogined ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                            className={classNames(isLoggedIn ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
                             로그인
                           </button>
@@ -99,7 +102,7 @@ export default function Navbar() {
                         {({ active }) => (
                           <a href="#">
                             <button
-                              className={classNames(!isLogined ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                              className={classNames(!isLoggedIn ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                             >
                               마이페이지
                             </button>
@@ -109,8 +112,8 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <button
-                            onClick={Logout}
-                            className={classNames(!isLogined ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                            onClick={LogoutHandler}
+                            className={classNames(!isLoggedIn ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
                             로그아웃
                           </button>

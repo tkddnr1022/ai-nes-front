@@ -1,35 +1,57 @@
 "use client"
 
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image';
 import { KakaoAuthUri } from "@/scripts/config_kakao";
-import { FirebaseAuth } from '@/scripts/config_firebase';
 import { useState } from 'react';
-import { GoogleAuthProvider, User, signInWithPopup } from 'firebase/auth';
 import RegisterModal from './register_modal';
-
+import { KakaoAuth, GoogleAuth, NativeAuth } from '@/scripts/api/get_auth';
+import useAuthStore from '@/scripts/auth_store';
 
 export default function Login() {
-    const params = useSearchParams();
-    const KakaoAuthCode = params.get('code');
-    if(KakaoAuthCode) KakaoLoginHandler();
-
-    function KakaoLoginHandler(){
-        console.log(`카카오 인가 코드: ${KakaoAuthCode}`);
-    }
-
-    function GoogleLoginHandler() {
-        const provider = new GoogleAuthProvider(); // provider를 구글로 설정
-        signInWithPopup(FirebaseAuth, provider) // popup을 이용한 signup
-            .then((data) => {
-                console.log(data) // console로 들어온 데이터 표시
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
 
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const { login } = useAuthStore();
+    const router = useRouter();
+
+    const NativeLoginHandler = async (email: string, password: string) => {
+        const authResult = await NativeAuth(email, password);
+        if (authResult.success) {
+            login(authResult.token as string, authResult.expiresIn as number);
+            router.push('/');
+        }
+        else {
+            // 로그인 실패
+        }
+    };
+
+    const GoogleLoginHandler = async () => {
+        const authResult = await GoogleAuth();
+        if (authResult.success) {
+            login(authResult.token as string, authResult.expiresIn as number);
+            router.push('/');
+        }
+        else {
+            // 로그인 실패
+        }
+    };
+
+    const KakaoLoginHandler = async (code: string) => {
+        const authResult = await KakaoAuth(code);
+        if (authResult.success) {
+            login(authResult.token as string, authResult.expiresIn as number);
+            router.push('/');
+        }
+        else {
+            // 로그인 실패
+        }
+    };
+    // code 파라미터 존재시 카카오 인증 진행
+    const KakaoAuthCode = useSearchParams().get('code');
+    if (KakaoAuthCode) KakaoLoginHandler(KakaoAuthCode);
 
     return (
         <div>
@@ -58,6 +80,7 @@ export default function Login() {
                                     type="email"
                                     autoComplete="email"
                                     required
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -81,6 +104,7 @@ export default function Login() {
                                     type="password"
                                     autoComplete="current-password"
                                     required
+                                    onChange={(e) => setPassword(e.target.value)}
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -89,6 +113,7 @@ export default function Login() {
                         <div>
                             <button
                                 type="submit"
+                                onClick={() => NativeLoginHandler(email, password)}
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 로그인
