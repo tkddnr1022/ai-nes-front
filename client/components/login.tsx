@@ -1,9 +1,9 @@
 "use client"
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image';
 import { KakaoAuthUri } from "@/scripts/config_kakao";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import RegisterModal from './register_modal';
 import { KakaoAuth, GoogleAuth, NativeAuth } from '@/scripts/api/get_auth';
 import useAuthStore from '@/scripts/auth_store';
@@ -17,7 +17,8 @@ export default function Login() {
     const { login } = useAuthStore();
     const router = useRouter();
 
-    const handleLogin = async (provider: string | undefined, email?: string, password?: string, code?: string) => {
+    // navtie, 소셜 로그인 핸들러
+    const handleLogin = async (provider?: string, email?: string, password?: string, code?: string) => {
         let authResult;
         switch (provider) {
             case undefined:
@@ -38,17 +39,41 @@ export default function Login() {
             router.push('/');
         } else {
             // 로그인 실패 처리
-            console.error('로그인에 실패하였습니다.');
+
         }
     };
 
-    // 카카오 코드가 존재하면 카카오 로그인 진행
-    const KakaoAuthCode = useSearchParams().get('code');
-    useEffect(() => {
-        if (KakaoAuthCode) {
-            handleLogin('kakao', undefined, undefined, KakaoAuthCode);
+    // 카카오 로그인 관련
+    // 파이어베이스 처럼 모듈화 하고싶은데 어떻게 한건지 모르겠음
+    // 로그인 팝업 열기
+    const openKakaoLogin = useCallback(() => {
+        window.open(
+            KakaoAuthUri,
+            'popupWindow',
+            'width=600,height=800,scrollbars=yes'
+        );
+    }, []);
+
+    // 인가코드 받기
+    const handlePopupMessage = useCallback((event: MessageEvent) => {
+        // 유효성 검사
+        if (event.origin !== window.location.origin) {
+            return;
         }
-    }, [KakaoAuthCode]);
+
+        if (event.data) {
+            handleLogin('kakao', undefined, undefined, event.data);
+        }
+    }, []);
+
+    // 메시지 수신 이벤트
+    useEffect(() => {
+        window.addEventListener('message', handlePopupMessage);
+
+        return () => {
+            window.removeEventListener('message', handlePopupMessage);
+        };
+    }, [handlePopupMessage]);
 
     return (
         <div>
@@ -114,18 +139,19 @@ export default function Login() {
                             >
                                 로그인
                             </button>
-                            <a
-                                href={KakaoAuthUri}
+                            <button
+                                type="button"
                                 className="relative flex w-full h-10 mx-auto justify-center items-center rounded-md mt-2"
+                                onClick={openKakaoLogin}
                             >
                                 <div className="relative w-full h-full flex justify-center items-center">
                                     <Image src="/images/kakao_login_large_wide.png" alt="Kakao Login" layout="fill" objectFit="contain" />
                                 </div>
-                            </a>
+                            </button>
                             <button
                                 type="button"
                                 className="relative flex w-full h-10 mx-auto justify-center items-center rounded-md mt-2"
-                                onClick={()=>handleLogin('google')}
+                                onClick={() => handleLogin('google')}
                             >
                                 <div className="relative w-full h-full flex justify-center items-center">
                                     <Image src="/images/google_login_SI.png" alt="Google Login" layout="fill" objectFit="contain" />

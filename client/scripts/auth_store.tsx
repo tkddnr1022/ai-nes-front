@@ -17,11 +17,13 @@ const useAuthStore = create(persist<AuthState>((set) => ({
         set({ token: t});
         // expiresIn 처리 필요
         set({ isLoggedIn: true });
+        window.location.reload();
     },
     logout: () => {
         set({ token: null});
         // expiresIn 처리 필요
         set({ isLoggedIn: false });
+        window.location.reload();
     },
 }), {
     name: 'authStorage'
