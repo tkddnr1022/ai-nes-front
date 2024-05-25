@@ -4,9 +4,13 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Chatbot from './chatbot'
+import LoginModal from './login_modal'
+import useAuthStore from '@/scripts/auth_store'
 
 export default function ChatbotModal() {
   const [open, setOpen] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const { isLoggedIn } = useAuthStore();
 
   return (
     <div>
@@ -69,12 +73,13 @@ export default function ChatbotModal() {
         <button
           type="button"
           className="rounded-3xl bg-blue-600 text-white p-3 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-white"
-          onClick={() => setOpen(true)}
+          onClick={() => isLoggedIn ? setOpen(true) : setIsLoginOpen(true)}
         >
           <span className="sr-only">Open chatbot</span>
           <ChatBubbleLeftRightIcon className="h-12 w-12" aria-hidden="true" />
         </button>
       </div>
+      <LoginModal open={isLoginOpen} setOpen={setIsLoginOpen} />
     </div>
   )
 }
