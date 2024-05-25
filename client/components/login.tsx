@@ -17,43 +17,36 @@ export default function Login() {
     const { login } = useAuthStore();
     const router = useRouter();
 
-    const NativeLoginHandler = async (email: string, password: string) => {
-        const authResult = await NativeAuth(email, password);
+    const handleLogin = async (provider: string | undefined, email?: string, password?: string, code?: string) => {
+        let authResult;
+        switch (provider) {
+            case undefined:
+                authResult = await NativeAuth(email as string, password as string);
+                break;
+            case 'google':
+                authResult = await GoogleAuth();
+                break;
+            case 'kakao':
+                authResult = await KakaoAuth(code as string);
+                break;
+            default:
+                throw new Error('Unsupported authentication provider');
+        }
+
         if (authResult.success) {
             login(authResult.token as string);
             router.push('/');
-        }
-        else {
-            // 로그인 실패
+        } else {
+            // 로그인 실패 처리
+            console.error('로그인에 실패하였습니다.');
         }
     };
 
-    const GoogleLoginHandler = async () => {
-        const authResult = await GoogleAuth();
-        if (authResult.success) {
-            login(authResult.token as string);
-            router.push('/');
-        }
-        else {
-            // 로그인 실패
-        }
-    };
-
-    const KakaoLoginHandler = async (code: string) => {
-        const authResult = await KakaoAuth(code);
-        if (authResult.success) {
-            login(authResult.token as string);
-            router.push('/');
-        }
-        else {
-            // 로그인 실패
-        }
-    };
-    // code 파라미터 존재시 카카오 인증 진행
+    // 카카오 코드가 존재하면 카카오 로그인 진행
     const KakaoAuthCode = useSearchParams().get('code');
     useEffect(() => {
         if (KakaoAuthCode) {
-            KakaoLoginHandler(KakaoAuthCode);
+            handleLogin('kakao', undefined, undefined, KakaoAuthCode);
         }
     }, [KakaoAuthCode]);
 
@@ -72,7 +65,7 @@ export default function Login() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" onSubmit={() => NativeLoginHandler(email, password)} method="POST">
+                    <form className="space-y-6" onSubmit={() => handleLogin(undefined, email, password)} method="POST">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 이메일
@@ -132,7 +125,7 @@ export default function Login() {
                             <button
                                 type="button"
                                 className="relative flex w-full h-10 mx-auto justify-center items-center rounded-md mt-2"
-                                onClick={GoogleLoginHandler}
+                                onClick={()=>handleLogin('google')}
                             >
                                 <div className="relative w-full h-full flex justify-center items-center">
                                     <Image src="/images/google_login_SI.png" alt="Google Login" layout="fill" objectFit="contain" />
