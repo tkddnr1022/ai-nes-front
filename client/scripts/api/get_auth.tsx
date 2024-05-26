@@ -71,8 +71,11 @@ async function GoogleAuth(): Promise<AuthResult> {
 }
 
 async function NativeAuth(email: string, password: string): Promise<AuthResult> {
+    
     try {
         console.log(email);
+        // Debug
+        // await new Promise(resolve => setTimeout(resolve, 4000));
 
         // 백엔드로부터 auth 얻는 코드 필요
         const authResult = {
@@ -81,7 +84,6 @@ async function NativeAuth(email: string, password: string): Promise<AuthResult> 
             email: "sample_email",
             expiresIn: 1234
         }
-
         return authResult;
     } catch (error) {
         console.log(error);
