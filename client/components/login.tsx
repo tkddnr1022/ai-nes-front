@@ -42,7 +42,7 @@ export default function Login() {
         // Debug
         // authResult.success = false;
         if (authResult.success) {
-            login(authResult.token as string);
+            login(authResult.token as string, authResult.email as string);
             router.push('/');
         } else {
             setIsLoginFail(true); 
@@ -166,7 +166,6 @@ export default function Login() {
                                     </svg>
                                     <span className="sr-only">Loading...</span>
                                 </div>
-
                             </button>
                             <button
                                 type="button"
