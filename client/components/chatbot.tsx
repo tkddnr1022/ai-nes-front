@@ -23,12 +23,12 @@ const Chatbot: React.FC = () => {
     if (searchResult.status != 200) {
       console.error(searchResult.status);
     } else {
-      const news = searchResult.items;
+      const news = searchResult.result;
       //setMessages(messages.slice(0, -1));
       if (!news || news.length === 0) {
         setMessages([...messages, { text: message, sender: 'user' }, { text: "검색 결과가 없습니다.", sender: 'bot' }])
       } else {
-        setMessages([...messages, { text: message, sender: 'user' }, { text: JSON.stringify(news[0]), sender: 'bot' }])
+        setMessages([...messages, { text: message, sender: 'user' }, { text: news, sender: 'bot' }])
       }
     }
     setDisableButton(false);
@@ -56,7 +56,8 @@ const Chatbot: React.FC = () => {
                 <div className="font-semibold leading-6 text-gray-900">
                   {message.sender === 'user' ? (<p>유저</p>) : (<p>챗봇</p>)}
                 </div>
-                <p className="mt-1 whitespace-normal break-all leading-5 text-gray-500">{message.text}</p>
+                <p className="mt-1 whitespace-normal break-all leading-5 text-gray-500"
+                  dangerouslySetInnerHTML={{ __html: message.text }}></p>
                 {message.sender === 'loading' ? (
                   <div role="status">
                     <svg aria-hidden="true" className={classNames(!disableButton ? "hidden" : "", "w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600")} viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
