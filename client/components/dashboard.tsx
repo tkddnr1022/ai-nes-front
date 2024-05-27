@@ -80,7 +80,7 @@ export default function Dashboard() {
                             </div>
 
                             <a
-                                href="#"
+                                href="#headline"
                                 className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700"
                             >
                                 분석 시작하기
