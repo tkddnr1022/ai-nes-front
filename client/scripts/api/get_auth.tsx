@@ -3,10 +3,14 @@ import { FirebaseAuth } from "../config_firebase";
 import axios from "axios";
 import { ServiceUri } from "../config_native";
 
+interface AuthRequest {
+    id: string;
+    password: string;
+}
 
 interface AuthResult {
     status?: number;
-    token?: string;
+    jwt_token?: string;
     id?: string;
     error?: string;
 }
@@ -56,7 +60,7 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
         */
 
         // 인가 코드로 유저 정보 획득
-        const response = await axios.post<KakaoUser>(ServiceUri + "api/getToken", { code: code });
+        const response = await axios.post<KakaoUser>(ServiceUri + "auth/getToken", { code: code });
         const kakaoUser = response.data;
 
         // Debug
@@ -66,7 +70,7 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
         if (response.status == 200) {
             const authResult: AuthResult = {
                 status: 200,
-                token: kakaoUser.jwt_token,
+                jwt_token: kakaoUser.jwt_token,
                 id: kakaoUser.kakao_account.email
             };
             return authResult;
@@ -89,7 +93,7 @@ async function GoogleAuth(): Promise<AuthResult> {
         // 백엔드로부터 auth 얻는 코드 필요
         const authResult: AuthResult = {
             status: 200,
-            token: "sample_token",
+            jwt_token: "sample_token",
             id: "sample_id",
         }
         return authResult;
@@ -99,19 +103,24 @@ async function GoogleAuth(): Promise<AuthResult> {
     }
 }
 
-async function NativeAuth(id: string, password: string): Promise<AuthResult> {
+async function NativeAuth(authRequest: AuthRequest): Promise<AuthResult> {
     try {
-        console.log(id);
+        console.log(authRequest);
         // Debug
         // await new Promise(resolve => setTimeout(resolve, 4000));
 
-        // 백엔드로부터 auth 얻는 코드 필요
-        const authResult: AuthResult = {
-            status: 200,
-            token: "sample_token",
-            id: "sample_id"
+        const response = await axios.post<AuthResult>(ServiceUri + "auth/login", authRequest);
+        if (response.status == 200) {
+            const authResult: AuthResult = {
+                status: 200,
+                jwt_token: response.data.jwt_token,
+                id: response.data.id,
+            }
+            return authResult;
         }
-        return authResult;
+        else {
+            return { status: response.status };
+        }
     } catch (err) {
         console.error(err);
         return { status: 500, error: JSON.stringify(err) };

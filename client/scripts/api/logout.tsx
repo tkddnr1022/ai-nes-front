@@ -12,7 +12,7 @@ async function KakaoLogout(token: string): Promise<string>{
 async function NativeLogout(id: string): Promise<Boolean> {
     try {
         const storage = JSON.parse(window.localStorage.authStorage);
-        const token = storage.state.token;
+        const token = storage.state.jwt_token;
         const response = await axios.post<Boolean>(ServiceUri + "auth/logout", { id: id, headers: { jwt_token: token } });
         return response.data;
     }

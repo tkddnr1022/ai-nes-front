@@ -28,7 +28,7 @@ export default function Login() {
         let authResult;
         switch (provider) {
             case undefined:
-                authResult = await NativeAuth(id as string, password as string);
+                authResult = await NativeAuth({id: id as string, password: password as string});
                 break;
             case 'google':
                 authResult = await GoogleAuth();
@@ -40,7 +40,7 @@ export default function Login() {
                 throw new Error('Unsupported authentication provider');
         }
         if (authResult.status == 200) {
-            login(authResult.token as string, authResult.id as string);
+            login(authResult.jwt_token as string, authResult.id as string);
             router.push('/');
         } else {
             setIsLoginFail(true);
