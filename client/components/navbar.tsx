@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import LoginModal from "./login_modal";
 import classNames from 'classnames'
 import useAuthStore from '@/scripts/auth_store'
+import { NativeLogout } from '@/scripts/api/logout'
 
 export default function Navbar() {
   const currentPath = usePathname();
@@ -15,11 +16,14 @@ export default function Navbar() {
     { name: '팀 소개', href: './about', current: currentPath == "/about" ? true : false }
   ]
 
-  const { isLoggedIn, logout } = useAuthStore();
+  const { isLoggedIn, logout, id } = useAuthStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const router = useRouter();
-  function LogoutHandler() {
-    // 백엔드에 로그아웃 전달 필요
+  async function LogoutHandler() {
+    const result = await NativeLogout(id as string);
+    if (!result) {
+      console.error("Logout Error");
+    }
     logout();
     router.push('/');
   }
