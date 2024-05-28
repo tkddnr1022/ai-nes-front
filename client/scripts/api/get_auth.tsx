@@ -5,10 +5,9 @@ import { ServiceUri } from "../config_native";
 
 
 interface AuthResult {
-    success: boolean;
-    token: string | null;
-    email: string | null;
-    expiresIn: number | null;
+    status?: number;
+    token?: string;
+    id?: string;
     error?: string;
 }
 
@@ -57,33 +56,27 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
         */
 
         // 인가 코드로 유저 정보 획득
-        const response = await axios.post<KakaoUser>(ServiceUri + "api/getToken", {code: code});
+        const response = await axios.post<KakaoUser>(ServiceUri + "api/getToken", { code: code });
         const kakaoUser = response.data;
 
         // Debug
         // window.localStorage.kakaoToken = JSON.stringify(kakaoToken);
         window.localStorage.kakaoUser = JSON.stringify(kakaoUser);
 
-        // 인증 결과 반환
-        const authResult: AuthResult = {
-            success: true,
-            token: kakaoUser.jwt_token,
-            email: kakaoUser.kakao_account.email,
-            expiresIn: 7
-        };
-        return authResult;
+        if (response.status == 200) {
+            const authResult: AuthResult = {
+                status: 200,
+                token: kakaoUser.jwt_token,
+                id: kakaoUser.kakao_account.email
+            };
+            return authResult;
+        }
+        else {
+            return { status: response.status };
+        }
     } catch (err) {
         console.error(err);
-
-        // 오류 결과 반환
-        const authResult: AuthResult = {
-            success: false,
-            token: null,
-            email: null,
-            expiresIn: null,
-            error: JSON.stringify(err)
-        };
-        return authResult;
+        return { status: 500, error: JSON.stringify(err) };
     }
 }
 
@@ -94,37 +87,34 @@ async function GoogleAuth(): Promise<AuthResult> {
         console.log(data);
 
         // 백엔드로부터 auth 얻는 코드 필요
-        const authResult = {
-            success: true,
+        const authResult: AuthResult = {
+            status: 200,
             token: "sample_token",
-            email: "sample_email",
-            expiresIn: 1234
+            id: "sample_id",
         }
-
         return authResult;
-    } catch (error) {
-        console.log(error);
-        return { success: false, token: null, email: null, expiresIn: null, error: "error" };
+    } catch (err) {
+        console.error(err);
+        return { status: 500, error: JSON.stringify(err) };
     }
 }
 
-async function NativeAuth(email: string, password: string): Promise<AuthResult> {
+async function NativeAuth(id: string, password: string): Promise<AuthResult> {
     try {
-        console.log(email);
+        console.log(id);
         // Debug
         // await new Promise(resolve => setTimeout(resolve, 4000));
 
         // 백엔드로부터 auth 얻는 코드 필요
-        const authResult = {
-            success: true,
+        const authResult: AuthResult = {
+            status: 200,
             token: "sample_token",
-            email: "sample_email",
-            expiresIn: 1234
+            id: "sample_id"
         }
         return authResult;
-    } catch (error) {
-        console.log(error);
-        return { success: false, token: null, email: null, expiresIn: null, error: "error" };
+    } catch (err) {
+        console.error(err);
+        return { status: 500, error: JSON.stringify(err) };
     }
 }
 

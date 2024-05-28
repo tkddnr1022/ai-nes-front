@@ -15,20 +15,20 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoginFail, setIsLoginFail] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [email, setEmail] = useState('');
+    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
 
     const { login } = useAuthStore();
     const router = useRouter();
 
-    // navtie, 소셜 로그인 핸들러
-    const handleLogin = async (provider?: string, email?: string, password?: string, code?: string) => {
+    // native, 소셜 로그인 핸들러
+    const handleLogin = async (provider?: string, id?: string, password?: string, code?: string) => {
         setIsLoading(true);
         setIsLoginFail(false);
         let authResult;
         switch (provider) {
             case undefined:
-                authResult = await NativeAuth(email as string, password as string);
+                authResult = await NativeAuth(id as string, password as string);
                 break;
             case 'google':
                 authResult = await GoogleAuth();
@@ -39,14 +39,12 @@ export default function Login() {
             default:
                 throw new Error('Unsupported authentication provider');
         }
-        // Debug
-        // authResult.success = false;
-        if (authResult.success) {
-            login(authResult.token as string, authResult.email as string);
+        if (authResult.status == 200) {
+            login(authResult.token as string, authResult.id as string);
             router.push('/');
         } else {
-            setIsLoginFail(true); 
-            if(authResult.error) console.error(authResult.error);
+            setIsLoginFail(true);
+            if (authResult.error) console.error(authResult.error);
         }
         setIsLoaded(true);
     };
@@ -102,20 +100,18 @@ export default function Login() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" onSubmit={(event) => { event.preventDefault(); handleLogin(undefined, email, password) }} method="POST">
+                    <form className="space-y-6" onSubmit={(event) => { event.preventDefault(); handleLogin(undefined, id, password) }} method="POST">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                이메일
+                            <label htmlFor="id" className="block text-sm font-medium leading-6 text-gray-900">
+                                아이디
                             </label>
                             <div className="mt-2">
                                 <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
+                                    id="id"
+                                    name="id"
                                     disabled={isLoading}
                                     required
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => setId(e.target.value)}
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
                                 />
                             </div>
@@ -147,7 +143,7 @@ export default function Login() {
                         </div>
 
                         <div>
-                            <p className={classNames(isLoginFail? "" : "hidden", "text-pink-600 text-sm")}>
+                            <p className={classNames(isLoginFail ? "" : "hidden", "text-pink-600 text-sm")}>
                                 이메일 혹은 비밀번호가 올바르지 않습니다.
                             </p>
                         </div>
