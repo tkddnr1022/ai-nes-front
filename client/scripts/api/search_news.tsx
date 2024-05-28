@@ -10,19 +10,19 @@ interface News {
 }
 
 interface SearchResponse {
-    "lastBuildDate": Date | null,
-    "total": number | null,
-    "start": number | null,
-    "display": number | null,
-    "items": News[] | null
+    "lastBuildDate"?: Date
+    "total"?: number
+    "start"?: number
+    "display"?: number
+    "items"?: News[]
 }
 
-interface SearchResult{
+interface SearchResult {
     "status": number,
-    "result": string
+    "result"?: string
 }
 
-function formatNews(news: News){
+function formatNews(news: News) {
     return `
     ${news.title}</br>
     ${news.pubDate}</br>
@@ -32,27 +32,26 @@ function formatNews(news: News){
 }
 
 export default async function SearchNews(query: string): Promise<SearchResult> {
-    const searchResult = { status: 500, result: "" };
     const storage = JSON.parse(window.localStorage.authStorage);
     const token = storage.state.jwt_token;
     const isLoggedIn = storage.state.isLoggedIn;
+    if (!token || !isLoggedIn) {
+        return { status: 401 };
+    }
     try {
-        if (!token || !isLoggedIn) {
-            searchResult.status = 401;
-            return searchResult;
-        }
         const response = await axios.post<SearchResponse>(ServiceUri + "api/news",
-            { chatbot_query: query }, { headers: { jwt_token: "Bearer " + token } });
-        searchResult.status = response.status;
-        if(response.status == 200 && response.data.items != null){
-            searchResult.result = formatNews(response.data.items[0]);
+            { chatbot_query: query }, { headers: { Authorization: "Bearer " + token } });
+        if (response.status != 200 || response.data.items == null) {
+            return { status: response.status };
         }
         // Debug
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // await new Promise(resolve => setTimeout(resolve, 2000));
+
+        const searchResult = { status: response.status, result: formatNews(response.data.items[0]) };
         return searchResult;
     }
     catch (err) {
         console.error(err);
-        return searchResult;
+        return { status: 500 };
     }
 }

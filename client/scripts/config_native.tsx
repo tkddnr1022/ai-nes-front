@@ -1,1 +1,1 @@
-export const ServiceUri = "/";
+export const ServiceUri = "/api/";

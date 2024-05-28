@@ -1,8 +1,9 @@
+// getUser test
 import { type NextRequest } from 'next/server'
 
 export function POST(request: NextRequest) {
-    const code = request.body;
-    if(!code) return Response.error();
+    const body = request.body;
+    if (!body) return Response.error();
     return Response.json({
         "id": 3488590382,
         "connected_at": "2024-05-19T05:44:47Z",

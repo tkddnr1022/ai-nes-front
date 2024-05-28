@@ -1,7 +1,8 @@
+// news test
 import { type NextRequest } from 'next/server'
 
 export function POST(request: NextRequest) {
-    const token = request.headers.get('jwt_token');
+    const token = request.headers.get('Authorization');
     console.log(token);
     if(!token) return Response.error();
     return Response.json(
