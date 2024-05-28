@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import LoginModal from "./login_modal";
 import classNames from 'classnames'
 import useAuthStore from '@/scripts/auth_store'
-import { NativeLogout } from '@/scripts/api/logout'
+import { KakaoLogout, NativeLogout } from '@/scripts/api/logout'
 
 export default function Navbar() {
   const currentPath = usePathname();
@@ -16,11 +16,24 @@ export default function Navbar() {
     { name: '팀 소개', href: './about', current: currentPath == "/about" ? true : false }
   ]
 
-  const { isLoggedIn, logout, id } = useAuthStore();
+  const { isLoggedIn, logout, id, provider } = useAuthStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const router = useRouter();
-  async function LogoutHandler() {
-    const result = await NativeLogout(id as string);
+  const handleLogin = async function () {
+    let result = null;
+    switch (provider) {
+      // 토큰을 직접 다루므로 보안 정책 검토 필요
+      case "kakao":
+        result = await KakaoLogout(window.localStorage.kakaoToken as string);
+        break;
+      case "google":
+        break;
+      case "native":
+        result = await NativeLogout(id as string);
+        break;
+      default:
+        break;
+    }
     if (!result) {
       console.error("Logout Error");
     }
@@ -116,7 +129,7 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <button
-                            onClick={LogoutHandler}
+                            onClick={handleLogin}
                             className={classNames(!isLoggedIn ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
                             로그아웃

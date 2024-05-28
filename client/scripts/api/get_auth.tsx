@@ -9,13 +9,14 @@ interface AuthRequest {
 }
 
 interface AuthResult {
-    status?: number;
+    status: number;
     jwt_token?: string;
     id?: string;
+    provider?: string;
     error?: string;
 }
 
-/*
+// 보류
 interface KakaoToken {
     access_token: string;
     token_type: string;
@@ -25,7 +26,6 @@ interface KakaoToken {
     scope: string;
     refresh_token_expires_in: string;
 }
-*/
 
 interface KakaoUser {
     "id": string;
@@ -46,38 +46,40 @@ interface KakaoUser {
 async function KakaoAuth(code: string): Promise<AuthResult> {
     try {
         console.log(code); // 카카오 인가 코드 표시
-
-        // 카카오 정책상 문제로 아래 부분은 사용하지 않음
         /*
-        // 인가 코드로 카카오 토큰 요청
-        const tokenResponse = await axios.get<KakaoToken>(ServiceUri + "api/getToken", { params: { code: code } });
-        const kakaoToken = tokenResponse.data;
-        const token = kakaoToken.access_token;
-
-        // 카카오 토큰으로 유저 정보 요청
-        const userResponse = await axios.get<KakaoUser>(ServiceUri + "api/getUser", { params: { token: token } });
-        const kakaoUser = userResponse.data;
-        */
-
         // 인가 코드로 유저 정보 획득
         const response = await axios.post<KakaoUser>(ServiceUri + "auth/getToken", { code: code });
         const kakaoUser = response.data;
+        */
 
+        // 보안 정책 문제 검토 필요
+        // 인가 코드로 카카오 토큰 요청
+        const tokenResponse = await axios.post<KakaoToken>(ServiceUri + "auth/getToken", { params: { code: code } });
+        const kakaoToken = tokenResponse.data;
+        const token = kakaoToken.access_token;
         // Debug
-        // window.localStorage.kakaoToken = JSON.stringify(kakaoToken);
-        window.localStorage.kakaoUser = JSON.stringify(kakaoUser);
+        window.localStorage.kakaoToken = kakaoToken.access_token;
+        if (tokenResponse.status != 200) {
+            return { status: tokenResponse.status };
+        }
 
-        if (response.status == 200) {
-            const authResult: AuthResult = {
-                status: 200,
-                jwt_token: kakaoUser.jwt_token,
-                id: kakaoUser.kakao_account.email
-            };
-            return authResult;
+        // 카카오 토큰으로 유저 정보 요청
+        const userResponse = await axios.post<KakaoUser>(ServiceUri + "auth/getUser", { params: { token: token } });
+        const kakaoUser = userResponse.data;
+        // Debug
+        // window.localStorage.kakaoUser = JSON.stringify(kakaoUser);
+        if (userResponse.status != 200) {
+            return { status: userResponse.status };
         }
-        else {
-            return { status: response.status };
-        }
+
+        // 인증 결과 반환
+        const authResult: AuthResult = {
+            status: 200,
+            jwt_token: kakaoUser.jwt_token,
+            id: kakaoUser.kakao_account.email,
+            provider: "kakao"
+        };
+        return authResult;
     } catch (err) {
         console.error(err);
         return { status: 500, error: JSON.stringify(err) };
@@ -95,6 +97,7 @@ async function GoogleAuth(): Promise<AuthResult> {
             status: 200,
             jwt_token: "sample_token",
             id: "sample_id",
+            provider: "kakao"
         }
         return authResult;
     } catch (err) {
@@ -110,17 +113,18 @@ async function NativeAuth(authRequest: AuthRequest): Promise<AuthResult> {
         // await new Promise(resolve => setTimeout(resolve, 4000));
 
         const response = await axios.post<AuthResult>(ServiceUri + "auth/login", authRequest);
-        if (response.status == 200) {
-            const authResult: AuthResult = {
-                status: 200,
-                jwt_token: response.data.jwt_token,
-                id: response.data.id,
-            }
-            return authResult;
-        }
-        else {
+        if (response.status != 200) {
             return { status: response.status };
         }
+
+        // 인증 결과 반환
+        const authResult: AuthResult = {
+            status: 200,
+            jwt_token: response.data.jwt_token,
+            id: response.data.id,
+            provider: "native"
+        }
+        return authResult;
     } catch (err) {
         console.error(err);
         return { status: 500, error: JSON.stringify(err) };
