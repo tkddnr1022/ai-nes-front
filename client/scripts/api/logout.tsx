@@ -17,6 +17,7 @@ async function KakaoLogout(token: string): Promise<string> {
     }
 }
 
+// native logout api 아직 명세되지 않아 오류 발생
 async function NativeLogout(id: string): Promise<Boolean> {
     try {
         const storage = JSON.parse(window.localStorage.authStorage);

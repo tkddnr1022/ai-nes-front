@@ -34,8 +34,7 @@ function formatNews(news: News) {
 export default async function SearchNews(query: string): Promise<SearchResult> {
     const storage = JSON.parse(window.localStorage.authStorage);
     const token = storage.state.jwt_token;
-    const isLoggedIn = storage.state.isLoggedIn;
-    if (!token || !isLoggedIn) {
+    if (!token) {
         return { status: 401 };
     }
     try {

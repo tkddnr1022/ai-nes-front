@@ -45,7 +45,6 @@ interface KakaoUser {
 
 async function KakaoAuth(code: string): Promise<AuthResult> {
     try {
-        console.log(code); // 카카오 인가 코드 표시
         /*
         // 인가 코드로 유저 정보 획득
         const response = await axios.post<KakaoUser>(ServiceUri + "auth/getToken", { code: code });
@@ -57,7 +56,9 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
         const tokenResponse = await axios.post<KakaoToken>(ServiceUri + "auth/getToken", { params: { code: code } });
         const kakaoToken = tokenResponse.data;
         const token = kakaoToken.access_token;
+        
         // Debug
+        console.log(code);
         window.localStorage.kakaoToken = kakaoToken.access_token;
         if (tokenResponse.status != 200) {
             return { status: tokenResponse.status };
@@ -90,6 +91,7 @@ async function GoogleAuth(): Promise<AuthResult> {
     const provider = new GoogleAuthProvider();
     try {
         const data = await signInWithPopup(FirebaseAuth, provider);
+        // Debug
         console.log(data);
 
         // 백엔드로부터 auth 얻는 코드 필요
@@ -97,7 +99,7 @@ async function GoogleAuth(): Promise<AuthResult> {
             status: 200,
             jwt_token: "sample_token",
             id: "sample_id",
-            provider: "kakao"
+            provider: "google"
         }
         return authResult;
     } catch (err) {
@@ -108,9 +110,9 @@ async function GoogleAuth(): Promise<AuthResult> {
 
 async function NativeAuth(authRequest: AuthRequest): Promise<AuthResult> {
     try {
-        console.log(authRequest);
         // Debug
         // await new Promise(resolve => setTimeout(resolve, 4000));
+        console.log(authRequest);
 
         const response = await axios.post<AuthResult>(ServiceUri + "auth/login", authRequest);
         if (response.status != 200) {

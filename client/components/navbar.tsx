@@ -16,7 +16,7 @@ export default function Navbar() {
     { name: '팀 소개', href: './about', current: currentPath == "/about" ? true : false }
   ]
 
-  const { isLoggedIn, logout, id, provider } = useAuthStore();
+  const { jwt_token, logout, id, provider } = useAuthStore();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const router = useRouter();
   const handleLogin = async function () {
@@ -109,7 +109,7 @@ export default function Navbar() {
                         {({ active }) => (
                           <button
                             onClick={() => setIsLoginOpen(true)}
-                            className={classNames(isLoggedIn ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                            className={classNames(jwt_token ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
                             로그인
                           </button>
@@ -119,7 +119,7 @@ export default function Navbar() {
                         {({ active }) => (
                           <a href="#">
                             <button
-                              className={classNames(!isLoggedIn ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                              className={classNames(!jwt_token ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                             >
                               마이페이지
                             </button>
@@ -130,7 +130,7 @@ export default function Navbar() {
                         {({ active }) => (
                           <button
                             onClick={handleLogin}
-                            className={classNames(!isLoggedIn ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
+                            className={classNames(!jwt_token ? 'hidden' : '', active ? 'bg-gray-100' : '', 'text-left block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
                             로그아웃
                           </button>

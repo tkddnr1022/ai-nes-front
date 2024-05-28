@@ -10,7 +10,7 @@ import useAuthStore from '@/scripts/auth_store'
 export default function ChatbotModal() {
   const [open, setOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const { isLoggedIn } = useAuthStore();
+  const { jwt_token } = useAuthStore();
 
   return (
     <div>
@@ -73,7 +73,7 @@ export default function ChatbotModal() {
         <button
           type="button"
           className="rounded-3xl bg-blue-600 text-white p-3 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-white"
-          onClick={() => isLoggedIn ? setOpen(true) : setIsLoginOpen(true)}
+          onClick={() => jwt_token ? setOpen(true) : setIsLoginOpen(true)}
         >
           <span className="sr-only">Open chatbot</span>
           <ChatBubbleLeftRightIcon className="h-12 w-12" aria-hidden="true" />
