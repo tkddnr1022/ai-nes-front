@@ -8,7 +8,7 @@ interface KakaoLogoutResult {
 // 토큰 요구하므로 보류
 async function KakaoLogout(token: string): Promise<string> {
     try {
-        const response = await axios.post<KakaoLogoutResult>(ServiceUri + "auth/logout", { access_token: token, headers: { Authorization: "Bearer " + token } });
+        const response = await axios.post<KakaoLogoutResult>("/auth/logout", { access_token: token, headers: { Authorization: "Bearer " + token } });
         return response.data.id;
     }
     catch (err) {
@@ -22,7 +22,7 @@ async function NativeLogout(id: string): Promise<Boolean> {
     try {
         const storage = JSON.parse(window.localStorage.authStorage);
         const token = storage.state.jwt_token;
-        const response = await axios.post<Boolean>(ServiceUri + "auth/logout", { id: id, headers: { Authorization: "Bearer " + token } });
+        const response = await axios.post<Boolean>("/auth/logout", { id: id, headers: { Authorization: "Bearer " + token } });
         return response.data;
     }
     catch (err) {

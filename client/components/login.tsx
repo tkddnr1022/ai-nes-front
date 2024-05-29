@@ -23,6 +23,7 @@ export default function Login() {
 
     // native, 소셜 로그인 핸들러
     const handleLogin = async (provider?: string, id?: string, password?: string, code?: string) => {
+		setIsLoaded(false);
         setIsLoading(true);
         setIsLoginFail(false);
         let authResult;
@@ -91,8 +92,8 @@ export default function Login() {
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
                         className="mx-auto h-16 w-auto"
-                        src="images/service_logo.png"
-                        alt="Your Company"
+                        src="../images/service_logo.png"
+                        alt="Logo"
                     />
                     <h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         계정에 로그인하기

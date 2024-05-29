@@ -13,7 +13,10 @@ interface RegitserResult{
 
 export default async function NativeRegister(regitserRequest: RegitserRequest): Promise<Boolean> {
     try{
-        const response = await axios.post<RegitserResult>(ServiceUri + "auth/signup", regitserRequest);
+        const response = await axios.post<RegitserResult>("/auth/signup", regitserRequest);
+		if(!response.data.success){
+			console.log(response);
+		}
         return response.data.success;
     }
     catch(err){

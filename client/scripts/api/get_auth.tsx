@@ -53,7 +53,7 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
 
         // 보안 정책 문제 검토 필요
         // 인가 코드로 카카오 토큰 요청
-        const tokenResponse = await axios.post<KakaoToken>(ServiceUri + "auth/getToken", { params: { code: code } });
+        const tokenResponse = await axios.post<KakaoToken>("/auth/getToken", { params: { code: code } });
         const kakaoToken = tokenResponse.data;
         const token = kakaoToken.access_token;
         
@@ -61,15 +61,17 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
         console.log(code);
         window.localStorage.kakaoToken = kakaoToken.access_token;
         if (tokenResponse.status != 200) {
+			console.log(tokenResponse);
             return { status: tokenResponse.status };
         }
 
         // 카카오 토큰으로 유저 정보 요청
-        const userResponse = await axios.post<KakaoUser>(ServiceUri + "auth/getUser", { params: { token: token } });
+        const userResponse = await axios.post<KakaoUser>("/auth/getUser", { params: { token: token } });
         const kakaoUser = userResponse.data;
         // Debug
         // window.localStorage.kakaoUser = JSON.stringify(kakaoUser);
         if (userResponse.status != 200) {
+			console.log(userResponse);
             return { status: userResponse.status };
         }
 
@@ -114,8 +116,9 @@ async function NativeAuth(authRequest: AuthRequest): Promise<AuthResult> {
         // await new Promise(resolve => setTimeout(resolve, 4000));
         console.log(authRequest);
 
-        const response = await axios.post<AuthResult>(ServiceUri + "auth/login", authRequest);
+        const response = await axios.post<AuthResult>("/auth/login", authRequest);
         if (response.status != 200) {
+			console.log(response);
             return { status: response.status };
         }
 

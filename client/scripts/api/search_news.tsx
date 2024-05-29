@@ -38,7 +38,7 @@ export default async function SearchNews(query: string): Promise<SearchResult> {
         return { status: 401 };
     }
     try {
-        const response = await axios.post<SearchResponse>(ServiceUri + "api/news",
+        const response = await axios.post<SearchResponse>("/api/news",
             { chatbot_query: query }, { headers: { Authorization: "Bearer " + token } });
         if (response.status != 200 || response.data.items == null) {
             return { status: response.status };
