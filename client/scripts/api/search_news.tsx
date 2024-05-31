@@ -38,9 +38,10 @@ export default async function SearchNews(query: string): Promise<SearchResult> {
         return { status: 401 };
     }
     try {
-        const response = await axios.post<SearchResponse>("/api/news",
-            { chatbot_query: query }, { headers: { Authorization: "Bearer " + token } });
-        if (response.status != 200 || response.data.items == null) {
+		console.log({ chatbot_query: query }, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.post<SearchResponse>("/service/search/news",
+            { query: query }, { headers: { Authorization: `Bearer ${token}` } });
+        if (response.status != 201 || response.data.items == null) {
             return { status: response.status };
         }
         // Debug

@@ -20,7 +20,7 @@ const Chatbot: React.FC = () => {
     setMessages([...messages, { text: message, sender: 'user' }, { text: '', sender: 'loading' }])
 
     const searchResult = await SearchNews(message);
-    if (searchResult.status != 200) {
+    if (searchResult.status != 201) {
       console.error(searchResult.status);
     } else {
       const news = searchResult.result;
@@ -40,6 +40,10 @@ const Chatbot: React.FC = () => {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+	
+	// todo: 히스토리 삭제 버튼
+	// todo: 채팅 로딩바 수정
+	// todo: 챗봇 정보 작성
 
   return (
     <div className='mt-6 mx-auto max-w-4xl px-6 lg:px-12 h-[80vh]'>

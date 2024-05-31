@@ -2,7 +2,7 @@
 const nextConfig = {
 	rewrites: () => [
     {
-      source: "/:start/:end",
+      source: "service/:start/:end",
       destination: `${process.env.NEXT_PUBLIC_API_URL}/:start/:end`,
     },
 	]

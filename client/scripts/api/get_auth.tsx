@@ -52,32 +52,33 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
         */
 
         // 보안 정책 문제 검토 필요
+		
+		// Debug
+        console.log(code);
         // 인가 코드로 카카오 토큰 요청
-        const tokenResponse = await axios.post<KakaoToken>("/auth/getToken", { params: { code: code } });
+        const tokenResponse = await axios.post<KakaoToken>("/service/auth/getToken", { auth_code : code });
         const kakaoToken = tokenResponse.data;
         const token = kakaoToken.access_token;
         
-        // Debug
-        console.log(code);
         window.localStorage.kakaoToken = kakaoToken.access_token;
-        if (tokenResponse.status != 200) {
+        if (tokenResponse.status != 201) {
 			console.log(tokenResponse);
             return { status: tokenResponse.status };
         }
 
         // 카카오 토큰으로 유저 정보 요청
-        const userResponse = await axios.post<KakaoUser>("/auth/getUser", { params: { token: token } });
+        const userResponse = await axios.post<KakaoUser>("/service/auth/getUser", { access_token: token });
         const kakaoUser = userResponse.data;
         // Debug
         // window.localStorage.kakaoUser = JSON.stringify(kakaoUser);
-        if (userResponse.status != 200) {
+        if (userResponse.status != 201) {
 			console.log(userResponse);
             return { status: userResponse.status };
         }
 
         // 인증 결과 반환
         const authResult: AuthResult = {
-            status: 200,
+            status: 201,
             jwt_token: kakaoUser.jwt_token,
             id: kakaoUser.kakao_account.email,
             provider: "kakao"
@@ -98,7 +99,7 @@ async function GoogleAuth(): Promise<AuthResult> {
 
         // 백엔드로부터 auth 얻는 코드 필요
         const authResult: AuthResult = {
-            status: 200,
+            status: 201,
             jwt_token: "sample_token",
             id: "sample_id",
             provider: "google"
@@ -116,15 +117,15 @@ async function NativeAuth(authRequest: AuthRequest): Promise<AuthResult> {
         // await new Promise(resolve => setTimeout(resolve, 4000));
         console.log(authRequest);
 
-        const response = await axios.post<AuthResult>("/auth/login", authRequest);
-        if (response.status != 200) {
+        const response = await axios.post<AuthResult>("/service/auth/login", authRequest);
+        if (response.status != 201) {
 			console.log(response);
             return { status: response.status };
         }
 
         // 인증 결과 반환
         const authResult: AuthResult = {
-            status: 200,
+            status: 201,
             jwt_token: response.data.jwt_token,
             id: response.data.id,
             provider: "native"

@@ -8,7 +8,7 @@ interface KakaoLogoutResult {
 // 토큰 요구하므로 보류
 async function KakaoLogout(token: string): Promise<string> {
     try {
-        const response = await axios.post<KakaoLogoutResult>("/auth/logout", { access_token: token, headers: { Authorization: "Bearer " + token } });
+        const response = await axios.post<KakaoLogoutResult>("/service/auth/logout", { access_token: token, headers: { Authorization: "Bearer " + token } });
         return response.data.id;
     }
     catch (err) {
