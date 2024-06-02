@@ -44,6 +44,7 @@ const Chatbot: React.FC = () => {
 	// todo: 히스토리 삭제 버튼
 	// todo: 채팅 로딩바 수정
 	// todo: 챗봇 정보 작성
+  // todo: 메시지 z-index 수정
 
   return (
     <div className='mt-6 mx-auto max-w-4xl px-6 lg:px-12 h-[80vh]'>

@@ -3,7 +3,7 @@ import axios from "axios";
 export interface Article {
     id?: number;
     link: string;
-    description: string;
+    origin_news: string;
     press: string;
     section: string;
     title: string;

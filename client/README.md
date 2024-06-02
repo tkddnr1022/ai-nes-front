@@ -9,6 +9,7 @@
 - classNames
 - Zustand
 - Axios
+- Flowbite
 
 ## 라우터
 
