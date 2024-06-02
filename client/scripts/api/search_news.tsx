@@ -1,4 +1,3 @@
-import { ServiceUri } from "../config_native"
 import axios from "axios";
 
 interface News {
@@ -45,7 +44,7 @@ export default async function SearchNews(query: string): Promise<SearchResult> {
             return { status: response.status };
         }
         // Debug
-        // await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
         const searchResult = { status: response.status, result: formatNews(response.data.items[0]) };
         return searchResult;

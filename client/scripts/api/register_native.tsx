@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ServiceUri } from "../config_native";
 
 interface RegitserRequest{
     id: string;
@@ -10,7 +9,7 @@ interface RegitserRequest{
 export default async function NativeRegister(regitserRequest: RegitserRequest): Promise<Boolean> {
     try{
         const response = await axios.post<Boolean>("/service/auth/signup", regitserRequest);
-		if(!response.data.success){
+		if(!response.data || response.status != 201){
 			console.log(response);
 		}
         return response.data;

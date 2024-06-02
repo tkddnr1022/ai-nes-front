@@ -1,7 +1,6 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FirebaseAuth } from "../config_firebase";
 import axios from "axios";
-import { ServiceUri } from "../config_native";
 
 interface AuthRequest {
     id: string;
@@ -60,7 +59,7 @@ async function KakaoAuth(code: string): Promise<AuthResult> {
         const kakaoToken = tokenResponse.data;
         const token = kakaoToken.access_token;
         
-        window.localStorage.kakaoToken = kakaoToken.access_token;
+        //window.localStorage.kakaoToken = kakaoToken.access_token;
         if (tokenResponse.status != 201) {
 			console.log(tokenResponse);
             return { status: tokenResponse.status };

@@ -14,9 +14,7 @@
 
 - app(localhost:3000)
     - about
-    - ~~api_(for dev)~~
-        - ~~news~~
-    - ~~auth_(for dev)~~
+    - ~~auth(for dev)~~
         - ~~getToken~~
         - ~~getUser~~
         - ~~login~~
@@ -27,7 +25,8 @@
     - login
         - kakao
     - register
-``api_`` ``auth_`` 디렉토리 언더바 제거하여 로컬에서 테스트 가능
+    - ~~search(for dev)~~
+        - ~~news~~
 
 ## 컴포넌트
 
@@ -72,3 +71,4 @@ NEXT_PUBLIC_MEASUREMENT_ID= "MEASUREMENT_ID"
 NEXT_PUBLIC_API_URL= "Backend URL"
 ```
 환경변수에 위 값들을 작성하여 root 디렉토리에 위치시켜야함
+`NEXT_PUBLIC_API_URL`에 `http://localhost:3000`입력하여 로컬에서 테스트 가능

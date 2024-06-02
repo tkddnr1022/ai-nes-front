@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ServiceUri } from "../config_native";
 
 interface KakaoLogoutResult {
     id: string;
