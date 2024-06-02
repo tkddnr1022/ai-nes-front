@@ -21,8 +21,6 @@
         - ~~login~~
         - ~~logout~~
         - ~~signup~~
-    - article
-        - [id]
     - login
         - kakao
     - register
@@ -33,6 +31,8 @@
 
 | 이름 | 설명 |
 | --- | --- |
+| article.tsx | 뉴스 기사 페이지 |
+| article_modal.tsx | 뉴스 기사 모달 |
 | dashboard.tsx | 서비스 개요 대시보드 |
 | footer.tsx | 페이지 하단 서비스 정보 |
 | headline.tsx | 헤드라인 뉴스 그리드 |
@@ -48,6 +48,7 @@
 
 | 이름 | 설명 |
 | --- | --- |
+| article_store.tsx | 기사 헤드라인 전역 관리 |
 | auth_store.tsx | 로그인 세션 전역 관리 |
 | chatbot_store.tsx | 챗봇 히스토리 전역 관리 |
 | config_firebase.tsx | 파이어베이스 소셜 로그인 구성 |

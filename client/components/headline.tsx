@@ -2,14 +2,19 @@
 
 import GetArticles, { Article } from "@/scripts/api/get_articles"
 import useArticleStore from "@/scripts/article_store"
-import { Popover, Transition, PopoverButton, PopoverPanel } from "@headlessui/react"
-import { Carousel, CustomFlowbiteTheme } from "flowbite-react"
-import { Fragment, useEffect, useState } from "react"
+import { Carousel } from "flowbite-react"
+import { useEffect, useState } from "react"
+import ArticleModal from "./article_modal"
+import { articleTheme } from "@/themes/article_theme"
+
+// todo: 기사 마우스 호버시 요약 보여주기
 
 export default function Headline() {
 
     const { articles, setArticles } = useArticleStore();
     const [articleChunks, setArticleChunks] = useState<Article[][]>();
+    const [isArticleOpen, setIsArticleOpen] = useState<boolean>(false);
+    const [openedArticleId, setOpenedArticleId] = useState<number>(1);
 
     const handleGetArticles = async () => {
         const getArticleResult = await GetArticles();
@@ -45,38 +50,6 @@ export default function Headline() {
         setArticleChunks(chunkArray(articles, Math.floor(articles.length / 5)));
     }, [articles])
 
-    const articleTheme: CustomFlowbiteTheme["carousel"] =
-    {
-        "root": {
-            "base": "px-12 pb-10 bg-gray-100 relative h-full w-full rounded-xl",
-            "leftControl": "absolute left-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none",
-            "rightControl": "absolute right-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none"
-        },
-        "indicators": {
-            "active": {
-                "off": "bg-gray-800/50 hover:bg-gray-800",
-                "on": "bg-gray-800"
-            },
-            "base": "h-3 w-3 rounded-full",
-            "wrapper": "absolute bottom-5 left-1/2 flex -translate-x-1/2 space-x-3"
-        },
-        "item": {
-            "base": "absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2",
-            "wrapper": {
-                "off": "w-full flex-shrink-0 transform cursor-default snap-center",
-                "on": "w-full flex-shrink-0 transform cursor-grab snap-center"
-            }
-        },
-        "control": {
-            "base": "inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-800/30 group-hover:bg-gray-800/60 group-focus:outline-none group-focus:ring-4 group-focus:ring-gray-800/70 sm:h-10 sm:w-10",
-            "icon": "h-5 w-5 text-gray-500 sm:h-6 sm:w-6"
-        },
-        "scrollContainer": {
-            "base": "flex h-full snap-mandatory overflow-y-hidden overflow-x-scroll scroll-smooth rounded-lg",
-            "snap": "snap-x"
-        }
-    }
-
     return (
         <div id="headline" className="bg-white py-24 sm:py-32 relative isolate overflow-hidden">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -91,7 +64,7 @@ export default function Headline() {
                         {articleChunks ? (articleChunks.map((chunk, index) => (
                             <div key={index} className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                                 {chunk.map((article) => (
-                                    <article key={article.id} className="flex max-w-xl flex-col items-start justify-between">
+                                    <article key={article.id} className="flex max-w-xl flex-col items-start justify-between" onClick={() => { setIsArticleOpen(true); setOpenedArticleId(article.id as number) }}>
                                         <div className="relative flex items-center gap-x-4">
                                             <div className="">
                                                 <div className="flex items-center gap-x-4 text-xs">
@@ -125,10 +98,19 @@ export default function Headline() {
                                     </article>
                                 ))}
                             </div>
-                        ))) : (<p>기사 불러오기 실패</p>)}
+                        ))) : (
+                            <div role="status" className="flex justify-center items-center">
+                                <svg aria-hidden="true" className="w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                </svg>
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        )}
                     </Carousel>
                 </div>
             </div>
+            <ArticleModal articleId={openedArticleId} open={isArticleOpen} setOpen={setIsArticleOpen} />
         </div >
     )
 }
