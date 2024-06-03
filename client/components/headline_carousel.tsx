@@ -32,7 +32,7 @@ const articleTheme: CustomFlowbiteTheme["carousel"] =
     }
 }
 
-export default function ArticleCarousel({
+export default function HeadlineCarousel({
     children,
 }: Readonly<{
     children: React.ReactNode;
