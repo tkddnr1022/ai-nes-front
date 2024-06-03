@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { type Article } from '@/scripts/api/get_articles';
 
 interface LoadedArticles {
-    articles: Article[]
+    articles: Article[];
     setArticles: (data: Article[]) => void;
 }
 

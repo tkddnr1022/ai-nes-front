@@ -11,10 +11,12 @@ import ArticleCarousel from "./article_carousel"
 export default function Headline() {
 
     const { articles, setArticles } = useArticleStore();
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [articleChunks, setArticleChunks] = useState<Article[][]>();
     const [isArticleOpen, setIsArticleOpen] = useState<boolean>(false);
     const [openedArticleId, setOpenedArticleId] = useState<number>(1);
 
+    // 기사 정보 불러오기
     const handleGetArticles = async () => {
         const getArticleResult = await GetArticles();
         if (getArticleResult.status != 201) {
@@ -31,13 +33,7 @@ export default function Headline() {
         }
     }
 
-    useEffect(() => {
-        console.log(articles);
-        if (!articles || articles.length == 0) {
-            handleGetArticles();
-        }
-    }, []);
-
+    // 페이지네이션
     const chunkArray = (array: Article[], size: number) => {
         const result = [];
         for (let i = 0; i < array.length; i += size) {
@@ -47,9 +43,22 @@ export default function Headline() {
         return result;
     };
 
+    // 스토리지 로드/갱신 시 플래그
     useEffect(() => {
-        setArticleChunks(chunkArray(articles, Math.floor(articles.length / 5)));
-    }, [articles])
+        return () => {
+            setIsLoaded(true);
+        }
+    }, [articles]);
+
+    // 스토리지 데이터 존재 여부에 따라 동작
+    useEffect(() => {
+        if (articles.length != 0) {
+            setArticleChunks(chunkArray(articles, Math.floor(articles.length / 5)));
+        }
+        else {
+            handleGetArticles();
+        }
+    }, [isLoaded]);
 
     return (
         <div id="headline" className="bg-white py-24 sm:py-32 relative isolate overflow-hidden">
