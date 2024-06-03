@@ -5,6 +5,7 @@ import useArticleStore from "@/scripts/article_store"
 import { useEffect, useState } from "react"
 import ArticleModal from "./article_modal"
 import ArticleCarousel from "./article_carousel"
+import { ArrowPathIcon } from "@heroicons/react/20/solid"
 
 // todo: 기사 마우스 호버시 요약 보여주기
 
@@ -12,6 +13,7 @@ export default function Headline() {
 
     const { articles, setArticles, rehydrated, getDate } = useArticleStore();
     const [isUpdated, setIsUpdated] = useState<boolean>(false);
+    const [isReloaded, setIsReloaded] = useState<boolean>(false);
     const [articleChunks, setArticleChunks] = useState<Article[][]>();
     const [isArticleOpen, setIsArticleOpen] = useState<boolean>(false);
     const [openedArticleId, setOpenedArticleId] = useState<number>(1);
@@ -30,6 +32,7 @@ export default function Headline() {
                 console.log("articles loaded");
                 setArticles(getArticleResult.items);
                 setIsUpdated(true);
+                setIsReloaded(false);
             }
         }
     }
@@ -57,14 +60,14 @@ export default function Headline() {
     // articleStorage 유효성 검사
     useEffect(() => {
         if (rehydrated) {
-            if (articles.length == 0 || isOutdated(new Date(getDate))) {
+            if (articles.length == 0 || isOutdated(new Date(getDate)) || isReloaded) {
                 handleGetArticles();
             }
             else {
                 setArticleChunks(chunkArray(articles, Math.floor(articles.length / 5)));
             }
         }
-    }, [rehydrated]);
+    }, [rehydrated, isReloaded]);
 
     // 데이터 갱신 시 렌더링 수행
     useEffect(() => {
@@ -82,9 +85,20 @@ export default function Headline() {
                         지금 이슈가 되는 기사들을 분석해보세요.
                     </p>
                 </div>
-                <div className="h-96 sm:h-96 xl:h-[26rem] 2xl:h-[26rem] mt-4">
+                <div className="h-96 sm:h-96 xl:h-[26rem] 2xl:h-[26rem] mt-4 relative">
+                    <div className="absolute right-0 top-0 p-4 z-50">
+                        <button
+                            type="button"
+                            disabled={isReloaded}
+                            className="cursor-pointer rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-white disabled:text-gray-300"
+                            onClick={() => { setIsReloaded(true); setArticleChunks(undefined); }}
+                        >
+                            <span className="sr-only">Refresh articles</span>
+                            <ArrowPathIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                    </div>
                     <ArticleCarousel>
-                        {articleChunks ? (articleChunks.map((chunk, index) => (
+                        {articleChunks ? (articleChunks?.map((chunk, index) => (
                             <div key={index} className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                                 {chunk.map((article) => (
                                     <article key={article.id} className="flex max-w-xl flex-col items-start justify-between" onClick={() => { setIsArticleOpen(true); setOpenedArticleId(article.id as number) }}>
