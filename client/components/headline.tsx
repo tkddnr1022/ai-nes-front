@@ -2,10 +2,9 @@
 
 import GetArticles, { Article } from "@/scripts/api/get_articles"
 import useArticleStore from "@/scripts/article_store"
-import { Carousel } from "flowbite-react"
 import { useEffect, useState } from "react"
 import ArticleModal from "./article_modal"
-import { articleTheme } from "@/themes/article_theme"
+import ArticleCarousel from "./article_carousel"
 
 // todo: 기사 마우스 호버시 요약 보여주기
 
@@ -26,25 +25,27 @@ export default function Headline() {
                 // todo: 당일 기사가 없을 경우 에러 처리
             }
             else {
+                console.log("articles loaded");
                 setArticles(getArticleResult.items);
             }
         }
     }
+
+    useEffect(() => {
+        console.log(articles);
+        if (!articles || articles.length == 0) {
+            handleGetArticles();
+        }
+    }, []);
 
     const chunkArray = (array: Article[], size: number) => {
         const result = [];
         for (let i = 0; i < array.length; i += size) {
             result.push(array.slice(i, i + size));
         }
-        console.log(result);
+        console.log("chunk generated");
         return result;
     };
-
-    useEffect(() => {
-        if (!articles || articles.length == 0) {
-            handleGetArticles();
-        }
-    }, []);
 
     useEffect(() => {
         setArticleChunks(chunkArray(articles, Math.floor(articles.length / 5)));
@@ -60,7 +61,7 @@ export default function Headline() {
                     </p>
                 </div>
                 <div className="h-96 sm:h-96 xl:h-[26rem] 2xl:h-[26rem] mt-4">
-                    <Carousel slide={false} theme={articleTheme}>
+                    <ArticleCarousel>
                         {articleChunks ? (articleChunks.map((chunk, index) => (
                             <div key={index} className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                                 {chunk.map((article) => (
@@ -107,7 +108,7 @@ export default function Headline() {
                                 <span className="sr-only">Loading...</span>
                             </div>
                         )}
-                    </Carousel>
+                    </ArticleCarousel>
                 </div>
             </div>
             <ArticleModal articleId={openedArticleId} open={isArticleOpen} setOpen={setIsArticleOpen} />
