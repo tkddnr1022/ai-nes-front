@@ -8,7 +8,6 @@ export interface Article {
     section: string;
     title: string;
     summary?: string;
-    date?: string;
 }
 
 interface GetArticlesResult {
@@ -23,12 +22,9 @@ export default async function GetArticles(): Promise<GetArticlesResult> {
             return { status: response.status };
         }
 
-        const today = new Date();
         let index = 0;
         for (const article of response.data) {
             article.id = index++;
-            article.date = `${today.getFullYear()}년 ${today.getMonth() + 1
-                }월 ${today.getDate()}일`;
             // todo: 실제 요약 구현
             article.summary = "기사 내용 요약";
         }

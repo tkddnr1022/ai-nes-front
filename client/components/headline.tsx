@@ -10,8 +10,8 @@ import ArticleCarousel from "./article_carousel"
 
 export default function Headline() {
 
-    const { articles, setArticles } = useArticleStore();
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const { articles, setArticles, rehydrated, getDate } = useArticleStore();
+    const [isUpdated, setIsUpdated] = useState<boolean>(false);
     const [articleChunks, setArticleChunks] = useState<Article[][]>();
     const [isArticleOpen, setIsArticleOpen] = useState<boolean>(false);
     const [openedArticleId, setOpenedArticleId] = useState<number>(1);
@@ -29,6 +29,7 @@ export default function Headline() {
             else {
                 console.log("articles loaded");
                 setArticles(getArticleResult.items);
+                setIsUpdated(true);
             }
         }
     }
@@ -43,22 +44,34 @@ export default function Headline() {
         return result;
     };
 
-    // 스토리지 로드/갱신 시 플래그
-    useEffect(() => {
-        return () => {
-            setIsLoaded(true);
-        }
-    }, [articles]);
+    // outdated 확인
+    const isOutdated = (date: Date) => {
+        const today = new Date();
+        return (
+            today.getFullYear() != date.getFullYear() ||
+            today.getMonth() != date.getMonth() ||
+            today.getDate() != date.getDate()
+        );
+    };
 
-    // 스토리지 데이터 존재 여부에 따라 동작
+    // articleStorage 유효성 검사
     useEffect(() => {
-        if (articles.length != 0) {
+        if (rehydrated) {
+            if (articles.length == 0 || isOutdated(new Date(getDate))) {
+                handleGetArticles();
+            }
+            else {
+                setArticleChunks(chunkArray(articles, Math.floor(articles.length / 5)));
+            }
+        }
+    }, [rehydrated]);
+
+    // 데이터 갱신 시 렌더링 수행
+    useEffect(() => {
+        if (isUpdated) {
             setArticleChunks(chunkArray(articles, Math.floor(articles.length / 5)));
         }
-        else {
-            handleGetArticles();
-        }
-    }, [isLoaded]);
+    }, [isUpdated]);
 
     return (
         <div id="headline" className="bg-white py-24 sm:py-32 relative isolate overflow-hidden">
@@ -78,8 +91,8 @@ export default function Headline() {
                                         <div className="relative flex items-center gap-x-4">
                                             <div className="">
                                                 <div className="flex items-center gap-x-4 text-xs">
-                                                    <time dateTime={article.date} className="text-gray-500">
-                                                        {article.date}
+                                                    <time dateTime={new Date(getDate).toDateString()} className="text-gray-500">
+                                                        {`${new Date(getDate).getFullYear()}년 ${new Date(getDate).getMonth() + 1}월 ${new Date(getDate).getDate()}일`}
                                                     </time>
                                                     <a
                                                         href="#"
