@@ -15,6 +15,8 @@
 
 - app(localhost:3000)
     - about
+    - ~~api(for dev)~~
+        - ~~getData~~
     - ~~auth(for dev)~~
         - ~~getToken~~
         - ~~getUser~~
@@ -36,6 +38,7 @@
 | dashboard.tsx | 서비스 개요 대시보드 |
 | footer.tsx | 페이지 하단 서비스 정보 |
 | headline.tsx | 헤드라인 뉴스 그리드 |
+| headline_carousel.tsx | 헤드라인 Carousel |
 | navbar.tsx | 페이지 상단 네비게이션 바 |
 | login.tsx | 로그인 페이지 |
 | login_modal.tsx | 로그인 모달 |
@@ -70,7 +73,10 @@ NEXT_PUBLIC_STORAGE_BUCKET= "STORAGE_BUCKET"
 NEXT_PUBLIC_MESSAGING_SENDER_ID= "MESSAGING_SENDER_ID"
 NEXT_PUBLIC_APP_ID= "APP_ID"
 NEXT_PUBLIC_MEASUREMENT_ID= "MEASUREMENT_ID"
-NEXT_PUBLIC_API_URL= "Backend URL"
+NEXT_PUBLIC_API_URL= "BACKEND_URL"
+NEXT_PUBLIC_SERVER_URL= "FRONTEND_URL"
+NEXT_PUBLIC_KAKAO_API_KEY= "KAKAO_CLIENT_ID"
 ```
 환경변수에 위 값들을 작성하여 root 디렉토리에 위치시켜야함
 `NEXT_PUBLIC_API_URL`에 `http://localhost:3000`입력하여 로컬에서 테스트 가능
+`NEXT_PUBLIC_SERVER_URL`필드에는 프론트엔드 서버의 root 주소(`http://localhost:3000` 등)지정
