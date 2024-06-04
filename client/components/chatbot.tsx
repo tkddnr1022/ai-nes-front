@@ -50,7 +50,7 @@ const Chatbot: React.FC = () => {
     <div className='mt-6 mx-auto max-w-4xl px-6 lg:px-12 h-[80vh]'>
       <ul role="list" className="relative overflow-y-auto h-full">
         {messages.map((message, index) => (
-          <li key={index} className="relative flex justify-between gap-x-6 py-5">
+          <li key={index} className="relative flex justify-between gap-x-6 py-5 z-50">
             <div className="flex min-w-0 gap-x-4">
               {message.sender === 'user' ? (
                 <UserCircleIcon className="h-12 w-12 flex-none" />
@@ -87,7 +87,7 @@ const Chatbot: React.FC = () => {
             (<div className="absolute p-3 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
               <CpuChipIcon className='mx-auto h-16 m-2' />
               <p className="text-2xl font-semibold">챗봇에게 물어보세요.</p>
-              <p className="mt-0.5 text-sm text-gray-400">"오늘 주목할만한 뉴스 분석해줘"</p>
+              <p className="mt-0.5 text-sm text-gray-400">{"오늘 주목할만한 뉴스 분석해줘"}</p>
             </div>)}
         </div>
       </ul>

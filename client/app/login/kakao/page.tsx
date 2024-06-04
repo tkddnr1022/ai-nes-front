@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-export default function loginKakao() {
+export default function LoginKakao() {
     const KakaoAuthCode = useSearchParams().get('code');
     useEffect(() => {
         if (KakaoAuthCode) {

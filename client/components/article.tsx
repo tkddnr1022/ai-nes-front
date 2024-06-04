@@ -2,7 +2,6 @@
 
 import {
     TagIcon,
-    CalendarIcon,
     UserCircleIcon,
     ShareIcon,
     LinkIcon,
@@ -45,20 +44,12 @@ const ArticlePage: React.FC<ArticlePageProps> = (props) => {
                     </div>
                     <div className="mt-1 flex flex-col sm:mt-2 sm:flex-row sm:flex-wrap sm:space-x-6">
                         <div className="mt-2 flex items-center text-sm text-gray-500">
-                            <img className="mr-1.5 h-5 w-5 flex-shrink-0 rounded-xl" aria-hidden="true" src="https://yt3.googleusercontent.com/w7ColCSgsKVMJuh6izq4oRlYn-ZkJ8roQuHQy1Nvc75ONCH7uzLmoUE5YMJtZqFCHb4ZFPxAOg=s900-c-k-c0x00ffffff-no-rj" />
+                        <UserCircleIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             {article.press}
                         </div>
                         <div className="mt-2 flex items-center text-sm text-gray-500">
                             <TagIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             {article.section}
-                        </div>
-                        <div className="mt-2 flex items-center text-sm text-gray-500">
-                            <CalendarIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                            {article.date}
-                        </div>
-                        <div className="mt-2 flex items-center text-sm text-gray-500">
-                            <UserCircleIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                            기자 이름
                         </div>
                     </div>
                     <div className="mt-2 flex flex-col sm:mt-2 sm:flex-row sm:flex-wrap sm:space-x-3 justify-end">
@@ -88,7 +79,7 @@ const ArticlePage: React.FC<ArticlePageProps> = (props) => {
                             </div>
                         </div>
                         <div>
-                            <a href={article.link}>
+                            <a href={article.link} target='_blank'>
                                 <button
                                     type="button"
                                     className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
