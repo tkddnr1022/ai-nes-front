@@ -80,3 +80,9 @@ NEXT_PUBLIC_KAKAO_API_KEY= "KAKAO_CLIENT_ID"
 환경변수에 위 값들을 작성하여 root 디렉토리에 위치시켜야함
 `NEXT_PUBLIC_API_URL`에 `http://localhost:3000`입력하여 로컬에서 테스트 가능
 `NEXT_PUBLIC_SERVER_URL`필드에는 프론트엔드 서버의 root 주소(`http://localhost:3000` 등)지정
+
+# 참조
+[오픈소스 이미지](https://unsplash.com/ko)
+[Tailwind CSS](https://tailwindui.com)
+[Flowbite React](https://flowbite-react.com/)
+[Customized Scrollbar](https://www.geeksforgeeks.org/how-to-change-style-of-scrollbar-using-tailwind-css/)
