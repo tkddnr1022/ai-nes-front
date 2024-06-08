@@ -8,6 +8,21 @@ function formatDateDB(date: Date) {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
+function formatDateRoute(date: Date){
+    date = new Date(date);
+    const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
+    const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+    return `${date.getFullYear()}${month}${day}`;
+}
+
+function formatDateObject(date: string) {
+    const year = parseInt(date.substring(0, 4), 10);
+    const month = parseInt(date.substring(4, 6), 10) - 1;
+    const day = parseInt(date.substring(6, 8), 10);
+
+    return new Date(year, month, day);
+}
+
 function formatTimeDiff(date: Date) {
     date = new Date(date);
     const now = new Date();
@@ -36,4 +51,4 @@ function formatTimeDiff(date: Date) {
     return `${diffInYears}년 전`;
 }
 
-export { formatDateString, formatDateDB, formatTimeDiff };
+export { formatDateString, formatDateDB, formatDateRoute, formatDateObject, formatTimeDiff };

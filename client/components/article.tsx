@@ -2,17 +2,17 @@
 
 import {
     TagIcon,
-    UserCircleIcon,
     ShareIcon,
     LinkIcon,
     MagnifyingGlassPlusIcon,
     MagnifyingGlassMinusIcon,
-    CalendarIcon
+    CalendarIcon,
+    NewspaperIcon
 } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 import classNames from 'classnames';
 import { Article } from '@/scripts/api/get_articles';
-import { formatDateString } from '@/scripts/date_format';
+import { formatDateRoute, formatDateString } from '@/scripts/date_format';
 
 interface ArticlePageProps {
     article: Article;
@@ -24,8 +24,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
 
     function copyToCliboard() {
         if (!isCopied) {
-            // todo: 실제 링크 복사 가능하도록 구현
-            const url = window.location.href;
+            const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/article/${formatDateRoute(article.date as Date)}/${article.id}`;
             navigator.clipboard.writeText(url).then(() => {
                 setIsCopied(true);
                 setTimeout(() => setIsCopied(false), 2000);
@@ -44,7 +43,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
                     </div>
                     <div className="mt-1 flex flex-col sm:mt-2 sm:flex-row sm:flex-wrap sm:space-x-6">
                         <div className="mt-2 flex items-center text-sm text-gray-500">
-                            <UserCircleIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                            <NewspaperIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             {article.press}
                         </div>
                         <div className="mt-2 flex items-center text-sm text-gray-500">
