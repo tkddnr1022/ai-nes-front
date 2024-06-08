@@ -7,6 +7,7 @@ import ArticleModal from "./article_modal"
 import HeadlineCarousel from "./headline_carousel"
 import { ArrowPathIcon } from "@heroicons/react/20/solid"
 import { formatDateString, formatTimeDiff } from "@/scripts/date_format"
+import HeadlineTooltip from "./headline_tooltip"
 
 // todo: 기사 마우스 호버시 요약 보여주기
 
@@ -88,8 +89,8 @@ export default function Headline() {
                     </p>
                 </div>
                 <div className="h-96 sm:h-96 xl:h-[28rem] 2xl:h-[28rem] mt-4 relative">
-                    <div className="absolute flex right-0 top-0 p-4 z-50">
-                        {articleChunks ? (<p className="text-xs mr-2 leading-6 text-gray-300">마지막 업데이트: {formatTimeDiff(getDate)}</p>) : ""}
+                    <div className="absolute flex right-0 top-0 p-4 z-20">
+                        {articleChunks ? (<p className="text-xs mr-2 leading-6 text-gray-400">마지막 업데이트: {formatTimeDiff(getDate)}</p>) : ""}
                         <button
                             type="button"
                             disabled={isReloaded}
@@ -105,36 +106,38 @@ export default function Headline() {
                             <div key={index} className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                                 {chunk.map((article) => (
                                     <article key={article.id} className="flex max-w-xl flex-col items-start justify-between" onClick={() => { setIsArticleOpen(true); setOpenedArticleId(article.id as number) }}>
-                                        <div className="relative flex items-center gap-x-4">
-                                            <div className="">
-                                                <div className="flex items-center gap-x-4 text-xs">
-                                                    <time dateTime={new Date(article.date as Date).toDateString()} className="text-gray-500">
-                                                        {formatDateString(article.date as Date)}
-                                                    </time>
-                                                    <a
-                                                        href="#"
-                                                        className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
-                                                    >
-                                                        {article.section}
-                                                    </a>
-                                                </div>
-                                                <div className="mt-2 group relative">
-                                                    <h3 className="text-left text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                                                        {article.title}
-                                                    </h3>
-                                                </div>
-                                                <div className="mt-3 relative flex items-center gap-x-4">
-                                                    <div className="text-sm leading-6">
-                                                        <p className="font-semibold text-gray-900">
-                                                            <a>
-                                                                <span className="absolute inset-0" />
-                                                                {article.press}
-                                                            </a>
-                                                        </p>
+                                        <HeadlineTooltip content={article.summary}>
+                                            <div className="relative flex items-center gap-x-4">
+                                                <div>
+                                                    <div className="flex items-center gap-x-4 text-xs">
+                                                        <time dateTime={new Date(article.date as Date).toDateString()} className="text-gray-500">
+                                                            {formatDateString(article.date as Date)}
+                                                        </time>
+                                                        <a
+                                                            href="#"
+                                                            className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
+                                                        >
+                                                            {article.section}
+                                                        </a>
+                                                    </div>
+                                                    <div className="mt-2 group relative">
+                                                        <h3 className="text-left text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                                                            {article.title}
+                                                        </h3>
+                                                    </div>
+                                                    <div className="mt-3 relative flex items-center gap-x-4">
+                                                        <div className="text-sm leading-6">
+                                                            <p className="font-semibold text-gray-900">
+                                                                <a>
+                                                                    <span className="absolute inset-0" />
+                                                                    {article.press}
+                                                                </a>
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </HeadlineTooltip>
                                     </article>
                                 ))}
                             </div>
