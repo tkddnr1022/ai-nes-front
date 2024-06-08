@@ -1,7 +1,8 @@
 // getData test
 import { NextResponse, type NextRequest } from 'next/server'
 
-export function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
+    const body = await request.json();
     const response =
     [
         {
@@ -215,6 +216,10 @@ export function GET(request: NextRequest) {
             "title": "카톡 또 먹통 … 1시간 가까이 메시지 오류"
         }
     ];
+
+    if(body.index){
+        return new NextResponse(JSON.stringify(response[body.index]), {status: 201});
+    }
 
     return new NextResponse(JSON.stringify(response), {status: 201});
 }

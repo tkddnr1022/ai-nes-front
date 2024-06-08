@@ -3,7 +3,7 @@ import { Carousel, CustomFlowbiteTheme } from "flowbite-react";
 const articleTheme: CustomFlowbiteTheme["carousel"] =
 {
     "root": {
-        "base": "px-12 pb-10 bg-gray-100 relative h-full w-full rounded-xl",
+        "base": "px-12 bg-gray-100 relative h-full w-full rounded-xl",
         "leftControl": "absolute left-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none",
         "rightControl": "absolute right-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none"
     },

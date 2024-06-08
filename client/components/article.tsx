@@ -6,21 +6,21 @@ import {
     ShareIcon,
     LinkIcon,
     MagnifyingGlassPlusIcon,
-    MagnifyingGlassMinusIcon
+    MagnifyingGlassMinusIcon,
+    CalendarIcon
 } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 import classNames from 'classnames';
-import useArticleStore from '@/scripts/article_store';
+import { Article } from '@/scripts/api/get_articles';
+import { formatDateString } from '@/scripts/date_format';
 
 interface ArticlePageProps {
-    articleId: number
+    article: Article;
 }
 
-const ArticlePage: React.FC<ArticlePageProps> = (props) => {
+const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
     const [isZoomIn, setIsZoomIn] = useState<Boolean>(false);
     const [isCopied, setIsCopied] = useState<Boolean>(false);
-    const { articles } = useArticleStore();
-    const article = articles[props.articleId];
 
     function copyToCliboard() {
         if (!isCopied) {
@@ -50,6 +50,10 @@ const ArticlePage: React.FC<ArticlePageProps> = (props) => {
                         <div className="mt-2 flex items-center text-sm text-gray-500">
                             <TagIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             {article.section}
+                        </div>
+                        <div className="mt-2 flex items-center text-sm text-gray-500">
+                            <CalendarIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                            {formatDateString(article.date as Date)}
                         </div>
                     </div>
                     <div className="mt-2 flex flex-col sm:mt-2 sm:flex-row sm:flex-wrap sm:space-x-3 justify-end">

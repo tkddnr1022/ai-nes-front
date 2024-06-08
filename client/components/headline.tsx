@@ -1,11 +1,12 @@
 'use client'
 
-import GetArticles, { Article } from "@/scripts/api/get_articles"
+import { GetArticles, Article } from "@/scripts/api/get_articles"
 import useArticleStore from "@/scripts/article_store"
 import { useEffect, useState } from "react"
 import ArticleModal from "./article_modal"
 import HeadlineCarousel from "./headline_carousel"
 import { ArrowPathIcon } from "@heroicons/react/20/solid"
+import { formatDateString, formatTimeDiff } from "@/scripts/date_format"
 
 // todo: 기사 마우스 호버시 요약 보여주기
 
@@ -50,6 +51,7 @@ export default function Headline() {
     // outdated 확인
     const isOutdated = (date: Date) => {
         const today = new Date();
+        date = new Date(date);
         return (
             today.getFullYear() != date.getFullYear() ||
             today.getMonth() != date.getMonth() ||
@@ -60,7 +62,7 @@ export default function Headline() {
     // articleStorage 유효성 검사
     useEffect(() => {
         if (rehydrated) {
-            if (articles.length == 0 || isOutdated(new Date(getDate)) || isReloaded) {
+            if (articles.length == 0 || isOutdated(getDate) || isReloaded) {
                 handleGetArticles();
             }
             else {
@@ -85,8 +87,9 @@ export default function Headline() {
                         지금 이슈가 되는 기사들을 분석해보세요.
                     </p>
                 </div>
-                <div className="h-96 sm:h-96 xl:h-[26rem] 2xl:h-[26rem] mt-4 relative">
-                    <div className="absolute right-0 top-0 p-4 z-50">
+                <div className="h-96 sm:h-96 xl:h-[28rem] 2xl:h-[28rem] mt-4 relative">
+                    <div className="absolute flex right-0 top-0 p-4 z-50">
+                        {articleChunks ? (<p className="text-xs mr-2 leading-6 text-gray-300">마지막 업데이트: {formatTimeDiff(getDate)}</p>) : ""}
                         <button
                             type="button"
                             disabled={isReloaded}
@@ -105,8 +108,8 @@ export default function Headline() {
                                         <div className="relative flex items-center gap-x-4">
                                             <div className="">
                                                 <div className="flex items-center gap-x-4 text-xs">
-                                                    <time dateTime={new Date(getDate).toDateString()} className="text-gray-500">
-                                                        {`${new Date(getDate).getFullYear()}년 ${new Date(getDate).getMonth() + 1}월 ${new Date(getDate).getDate()}일`}
+                                                    <time dateTime={new Date(article.date as Date).toDateString()} className="text-gray-500">
+                                                        {formatDateString(article.date as Date)}
                                                     </time>
                                                     <a
                                                         href="#"
@@ -147,7 +150,7 @@ export default function Headline() {
                     </HeadlineCarousel>
                 </div>
             </div>
-            <ArticleModal articleId={openedArticleId} open={isArticleOpen} setOpen={setIsArticleOpen} />
+            <ArticleModal article={articles[openedArticleId]} open={isArticleOpen} setOpen={setIsArticleOpen} />
         </div >
     )
 }
