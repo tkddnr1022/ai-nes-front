@@ -47,7 +47,11 @@ export default function () {
             {isLoaded ?
                 article ? <ArticlePage article={article} />
                     : <Error statusCode={404} />
-                : <Spinner color="purple" aria-label="loading.." size="xl"/>
+                : <div className="flex justify-center h-[80vh]">
+                    <div className="absolute top-1/2 transform -translate-y-1/2">
+                        <Spinner color="purple" aria-label="loading.." size="xl" />
+                    </div>
+                </div>
             }
         </div>
     );
