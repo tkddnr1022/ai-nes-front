@@ -80,7 +80,7 @@ export default function ArticleList() {
                     />
                 </div>
                 <div className="relative my-3 p-4 h-[32rem] bg-gray-100 rounded-2xl">
-                    {articleChunks ? (articleChunks?.map((chunk, index) => (
+                    {articleChunks && isLoaded ? (articleChunks?.map((chunk, index) => (
                         <div key={index} className={classNames(index + 1 == currentPage ? '' : 'hidden',
                             "mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3")}>
                             {chunk.map((article) => (
@@ -96,7 +96,13 @@ export default function ArticleList() {
                     )}
                 </div>
                 <div className="flex overflow-x-auto sm:justify-center">
-                    <Pagination currentPage={currentPage} totalPages={pageLength} onPageChange={onPageChange} showIcons />
+                    <Pagination 
+                    currentPage={currentPage} 
+                    totalPages={pageLength} 
+                    onPageChange={onPageChange} 
+                    previousLabel="이전"
+                    nextLabel="다음" 
+                    showIcons />
                 </div>
             </div>
             {articles ? <ArticleModal article={articles[openedArticleId]} open={isArticleOpen} setOpen={setIsArticleOpen} /> : ""}

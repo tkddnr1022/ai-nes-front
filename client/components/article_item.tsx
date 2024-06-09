@@ -1,5 +1,5 @@
 import { Article } from "@/scripts/api/get_articles";
-import HeadlineTooltip from "./headline_tooltip";
+import SummaryTooltip from "./summary_tooltip";
 import { formatDateString } from "@/scripts/date_format";
 
 interface ArticleItemProps {
@@ -8,7 +8,7 @@ interface ArticleItemProps {
 
 const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
     return (
-        <HeadlineTooltip content={article.summary}>
+        <SummaryTooltip content={article.summary as string}>
             <div className="relative flex items-center gap-x-4">
                 <div>
                     <div className="flex items-center gap-x-4 text-xs">
@@ -39,7 +39,7 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
                     </div>
                 </div>
             </div>
-        </HeadlineTooltip>
+        </SummaryTooltip>
     );
 }
 

@@ -32,8 +32,21 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
         }
     }
 
+    function filterSentiment(sent: string) {
+        switch (sent) {
+            case "anger":
+                return "😠";
+            case "sadness":
+                return "😥";
+            case "fear":
+                return "😰";
+            case "joy":
+                return "😃";
+        }
+    }
+
     return (
-        <div className="mx-auto psm:static px-4 sm:px-6 lg:px-8 pt-4 sm:pt-24 lg:pt-16 pb-32 sm:pb-20 lg:pb-24">
+        <div className="mx-auto psm:static px-4 sm:px-6 lg:px-8 pt-4 sm:pt-24 lg:pt-16 pb-16 sm:pb-12 lg:pb-8">
             <div className="lg:items-center lg:justify-between">
                 <div className="min-w-0">
                     <div>
@@ -99,6 +112,12 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
                 <p className={classNames('', { 'text-xl': isZoomIn, 'text-base': !isZoomIn }, 'tracking-wider leading-7')}>
                     {article.origin_news}
                 </p>
+            </div>
+            <div className="border-t border-slate-900/10 mt-5">
+                <div className="text-center mt-5 w-full h-full bg-gray-100 p-4 rounded-2xl">
+                    <p className="text-3xl">{filterSentiment(article.sentiment)}</p>
+                    <p className="text-base mt-2">AI가 이 기사를 읽고 분석한 감정은 <b>{article.sentiment}</b> 입니다.</p>
+                </div>
             </div>
         </div>
     )

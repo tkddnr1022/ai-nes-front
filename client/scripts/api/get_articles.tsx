@@ -9,7 +9,8 @@ export interface Article {
     press: string;
     section: string;
     title: string;
-    summary?: string;
+    summary: string;
+    sentiment: string;
 }
 interface GetArticleResult {
     status: number;

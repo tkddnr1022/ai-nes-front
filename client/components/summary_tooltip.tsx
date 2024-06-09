@@ -1,4 +1,4 @@
-import { CustomFlowbiteTheme, Tooltip } from "flowbite-react";
+import { Badge, CustomFlowbiteTheme, Tooltip } from "flowbite-react";
 
 const tooltipTheme: CustomFlowbiteTheme["tooltip"] =
 {
@@ -23,10 +23,15 @@ const tooltipTheme: CustomFlowbiteTheme["tooltip"] =
   "content": "relative z-50 max-w-xl"
 }
 
-export default function HeadlineTooltip({children, content}: Readonly<{children: React.ReactNode; content: React.ReactNode;}>) 
-{
+export default function SummaryTooltip({ children, content }: Readonly<{ children: React.ReactNode; content: string; }>) {
+  const node = (
+    <div>
+      <Badge color="purple" className="w-full inline mr-1">요약</Badge>
+      <p className="inline">{content}</p>
+    </div>
+  );
   return (
-    <Tooltip content={content} style="light" animation="duration-150" theme={tooltipTheme}>
+    <Tooltip content={node} style="light" animation="duration-150" theme={tooltipTheme}>
       {children}
     </Tooltip>
   )
