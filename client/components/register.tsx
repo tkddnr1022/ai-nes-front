@@ -7,6 +7,7 @@ import NativeRegister from '@/scripts/api/register_native'
 import { NativeAuth } from '@/scripts/api/get_auth'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
+import { FloatingLabel } from 'flowbite-react'
 
 export default function Register() {
   const [id, setId] = useState('');
@@ -52,53 +53,38 @@ export default function Register() {
       <form onSubmit={(event) => { event.preventDefault(); handleRegister(id, email, password) }} method="POST" className="mx-auto mt-8 max-w-xl">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <label htmlFor="id" className="block text-sm font-semibold leading-6 text-gray-900">
-              아이디
-            </label>
-            <div className="mt-2.5">
-              <input
-                name="id"
-                id="id"
-                disabled={isLoading}
-                required
-                onChange={(e) => setId(e.target.value)}
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FloatingLabel
+              variant="outlined"
+              label="아이디"
+              name="id"
+              id="id"
+              disabled={isLoading}
+              onChange={(e) => setId(e.target.value)}
+              required />
           </div>
           <div className="sm:col-span-2">
-            <label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
-              이메일
-            </label>
-            <div className="mt-2.5">
-              <input
-                type="email"
-                name="email"
-                id="email"
-                autoComplete="email"
-                disabled={isLoading}
-                required
-                onChange={(e) => setEmail(e.target.value)}
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FloatingLabel
+              variant="outlined"
+              label="이메일"
+              type="email"
+              name="email"
+              id="email"
+              autoComplete="email"
+              disabled={isLoading}
+              onChange={(e) => setEmail(e.target.value)}
+              required />
           </div>
           <div className="sm:col-span-2">
-            <label htmlFor="password" className="block text-sm font-semibold leading-6 text-gray-900">
-              비밀번호
-            </label>
-            <div className="mt-2.5">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                disabled={isLoading}
-                required
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="organization"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FloatingLabel
+              variant="outlined"
+              label="비밀번호"
+              type="password"
+              name="password"
+              id="password"
+              autoComplete="password"
+              disabled={isLoading}
+              onChange={(e) => setPassword(e.target.value)}
+              required />
           </div>
           <Switch.Group as="div" className="flex gap-x-4 sm:col-span-2">
             <div className="flex h-6 items-center">
