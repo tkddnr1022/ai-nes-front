@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import Error from "next/error";
 import { Spinner } from "flowbite-react";
 
-export default function () {
+export default function SingleArticle() {
     const path = usePathname().split('/');
     const date = path[2];
     const index = Number(path[3]);
