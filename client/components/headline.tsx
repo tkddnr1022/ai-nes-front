@@ -11,8 +11,6 @@ import ArticleItem from "./article_item"
 import { Spinner } from "flowbite-react"
 import classNames from "classnames"
 
-// todo: 기사 마우스 호버시 요약 보여주기
-
 export default function Headline() {
 
     const { articles, setArticles, rehydrated, getDate } = useArticleStore();
