@@ -32,6 +32,7 @@ export default function Register() {
   const handleRegister = async (id: string, email: string, password: string) => {
     if (!agreed) {
       setIsAgreeRequired(true);
+      setIsLoading(false);
       return;
     }
     const registerResult = await NativeRegister({ id: id, email: email, password: password });
