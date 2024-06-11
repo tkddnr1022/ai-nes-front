@@ -89,7 +89,7 @@ export default function Headline() {
                         지금 이슈가 되는 기사들을 분석해보세요.
                     </p>
                 </div>
-                <div className="h-96 sm:h-96 xl:h-[28rem] 2xl:h-[28rem] mt-4 relative">
+                <div className="h-[42rem] lg:h-[28rem] mt-4 relative">
                     <div className="absolute flex right-0 top-0 p-4 z-20">
                         {articleChunks ? (<p className="text-xs mr-2 leading-6 text-gray-400">마지막 업데이트: {formatTimeDiff(getDate)}</p>) : ""}
                         <button
@@ -104,7 +104,7 @@ export default function Headline() {
                     </div>
                     <HeadlineCarousel>
                         {articleChunks ? (articleChunks?.map((chunk, index) => (
-                            <div key={index} className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                            <div key={index} className="mx-auto grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 lg:gap-y-12">
                                 {chunk.map((article) => (
                                     <article key={article.id} className="flex max-w-xl flex-col items-start justify-between" onClick={() => { setIsArticleOpen(true); setOpenedArticleId(article.id as number) }}>
                                         <ArticleItem article={article}/>

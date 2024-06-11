@@ -62,7 +62,7 @@ export default function ArticleList() {
 
     return (
         <div className="bg-white py-12 sm:py-16 rounded-2xl">
-            <div className="mx-auto max-w-6xl sm:max-w-4xl">
+            <div className="mx-auto max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl ">
                 <div className="w-full">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">기사 모아보기</h2>
                     <p className="mt-2 text-lg leading-8 text-gray-600">
@@ -79,10 +79,10 @@ export default function ArticleList() {
                         onSelectedDateChanged={(date: Date) => { setIsLoaded(false); handleGetArticles(date); }}
                     />
                 </div>
-                <div className="relative my-3 p-4 h-[32rem] bg-gray-100 rounded-2xl">
+                <div className="relative my-3 p-4 bg-gray-100 rounded-2xl min-h-[60vh]">
                     {articleChunks && isLoaded ? (articleChunks?.map((chunk, index) => (
                         <div key={index} className={classNames(index + 1 == currentPage ? '' : 'hidden',
-                            "mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3")}>
+                            "mx-auto grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-12")}>
                             {chunk.map((article) => (
                                 <article key={article.id} className="flex max-w-xl flex-col items-start justify-between" onClick={() => { setIsArticleOpen(true); setOpenedArticleId(article.id as number) }}>
                                     <ArticleItem article={article} />
@@ -95,7 +95,7 @@ export default function ArticleList() {
                         </div>
                     )}
                 </div>
-                <div className="flex overflow-x-auto sm:justify-center">
+                <div className="flex overflow-x-auto justify-center">
                     <Pagination 
                     currentPage={currentPage} 
                     totalPages={pageLength} 
