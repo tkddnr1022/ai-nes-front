@@ -43,13 +43,22 @@ async function SearchNews(query: string): Promise<SearchResult> {
         const searchResult = response.data;
         searchResult.status = response.status;
         let index = 0;
-        for (const news of searchResult.items as News[]){
+        for (const news of searchResult.items as News[]) {
             news.id = index++;
         }
         return searchResult;
     } catch (err) {
         console.error(err);
-        return { status: 500 };
+        if (axios.isAxiosError(err)) {
+            return {
+                status: err.response?.status as number
+            };
+        }
+        else {
+            return {
+                status: 500
+            };
+        }
     }
 }
 

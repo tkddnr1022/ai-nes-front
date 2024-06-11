@@ -9,12 +9,14 @@ import { ArrowPathIcon } from "@heroicons/react/20/solid"
 import { formatTimeDiff } from "@/scripts/date_format"
 import ArticleItem from "./article_item"
 import { Spinner } from "flowbite-react"
+import classNames from "classnames"
 
 // todo: 기사 마우스 호버시 요약 보여주기
 
 export default function Headline() {
 
     const { articles, setArticles, rehydrated, getDate } = useArticleStore();
+    const [isError, setIsError] = useState<boolean>(false);
     const [isUpdated, setIsUpdated] = useState<boolean>(false);
     const [isReloaded, setIsReloaded] = useState<boolean>(false);
     const [articleChunks, setArticleChunks] = useState<Article[][]>();
@@ -26,17 +28,17 @@ export default function Headline() {
         const getArticleResult = await GetArticles();
         if (getArticleResult.status != 201) {
             console.error(getArticleResult.status);
+            setIsError(true);
+        }
+        else if(!getArticleResult.items || getArticleResult.items.length == 0){
+            console.error("empty results");
+            setIsError(true);
         }
         else {
-            if (!getArticleResult.items || getArticleResult.items.length == 0) {
-                // todo: 당일 기사가 없을 경우 에러 처리
-            }
-            else {
-                console.log("articles loaded");
-                setArticles(getArticleResult.items);
-                setIsUpdated(true);
-                setIsReloaded(false);
-            }
+            console.log("articles loaded");
+            setArticles(getArticleResult.items);
+            setIsUpdated(true);
+            setIsReloaded(false);
         }
     }
 
@@ -96,7 +98,7 @@ export default function Headline() {
                             type="button"
                             disabled={isReloaded}
                             className="cursor-pointer rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-white disabled:text-gray-300"
-                            onClick={() => { setIsReloaded(true); setArticleChunks(undefined); }}
+                            onClick={() => { setIsReloaded(true); setArticleChunks(undefined); setIsError(false); }}
                         >
                             <span className="sr-only">Refresh articles</span>
                             <ArrowPathIcon className="h-6 w-6" aria-hidden="true" />
@@ -107,14 +109,20 @@ export default function Headline() {
                             <div key={index} className="mx-auto grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 lg:gap-y-12">
                                 {chunk.map((article) => (
                                     <article key={article.id} className="flex max-w-xl flex-col items-start justify-between" onClick={() => { setIsArticleOpen(true); setOpenedArticleId(article.id as number) }}>
-                                        <ArticleItem article={article}/>
+                                        <ArticleItem article={article} />
                                     </article>
                                 ))}
                             </div>
                         ))) : (
-                            <div role="status" className="flex justify-center items-center">
-                                <Spinner color="purple" aria-label="loading.." size="xl"/>
+                            <div className="flex justify-center items-center">
+                                <div role="status" className={classNames(isError ? "hidden" : "")}>
+                                    <Spinner color="purple" aria-label="loading.." size="xl" />
+                                </div>
+                                <div role="status" className={classNames(!isError ? "hidden" : "")}>
+                                    <p className="text-sm text-gray-500">금일 뉴스를 불러오는 데 실패했습니다.</p>
+                                </div>
                             </div>
+
                         )}
                     </HeadlineCarousel>
                 </div>

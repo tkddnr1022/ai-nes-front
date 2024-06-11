@@ -13,6 +13,7 @@ export default function ArticleList() {
 
     const [articles, setArticles] = useState<Article[]>();
     const [articleChunks, setArticleChunks] = useState<Article[][]>();
+    const [isError, setIsError] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageLength, setPageLength] = useState(1);
     const [isArticleOpen, setIsArticleOpen] = useState<boolean>(false);
@@ -24,15 +25,15 @@ export default function ArticleList() {
         const getArticleResult = await GetArticles(date);
         if (getArticleResult.status != 201) {
             console.error(getArticleResult.status);
+            setIsError(true);
+        }
+        else if (!getArticleResult.items || getArticleResult.items.length == 0) {
+            console.error("empty results");
+            setIsError(true);
         }
         else {
-            if (!getArticleResult.items || getArticleResult.items.length == 0) {
-                // todo: 해당 날짜 기사가 없을 경우 에러 처리
-            }
-            else {
-                console.log("articles loaded");
-                setArticles(getArticleResult.items);
-            }
+            console.log("articles loaded");
+            setArticles(getArticleResult.items);
         }
         setIsLoaded(true);
     }
@@ -48,7 +49,16 @@ export default function ArticleList() {
         return result;
     };
 
-    const onPageChange = (page: number) => setCurrentPage(page);
+    const onPageChange = (page: number) => {
+        setCurrentPage(page);
+    }
+
+    const onDateChange = (date: Date) => {
+        setIsLoaded(false);
+        setIsError(false);
+        setArticleChunks(undefined);
+        handleGetArticles(date);
+    }
 
     useEffect(() => {
         handleGetArticles(new Date());
@@ -76,7 +86,7 @@ export default function ArticleList() {
                         maxDate={new Date()}
                         labelTodayButton="오늘"
                         showClearButton={false}
-                        onSelectedDateChanged={(date: Date) => { setIsLoaded(false); handleGetArticles(date); }}
+                        onSelectedDateChanged={onDateChange}
                     />
                 </div>
                 <div className="relative my-3 p-4 bg-gray-100 rounded-2xl min-h-[60vh]">
@@ -91,18 +101,20 @@ export default function ArticleList() {
                         </div>
                     ))) : (
                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                            <Spinner color="purple" aria-label="loading.." size="xl"/>
+                            {isError ? <p className="text-sm text-gray-500">뉴스를 불러오는 데 실패했습니다.</p>
+                                : <Spinner color="purple" aria-label="loading.." size="xl" />}
                         </div>
+
                     )}
                 </div>
                 <div className="flex overflow-x-auto justify-center">
-                    <Pagination 
-                    currentPage={currentPage} 
-                    totalPages={pageLength} 
-                    onPageChange={onPageChange} 
-                    previousLabel="이전"
-                    nextLabel="다음" 
-                    showIcons />
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={pageLength}
+                        onPageChange={onPageChange}
+                        previousLabel="이전"
+                        nextLabel="다음"
+                        showIcons />
                 </div>
             </div>
             {articles ? <ArticleModal article={articles[openedArticleId]} open={isArticleOpen} setOpen={setIsArticleOpen} /> : ""}
