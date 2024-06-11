@@ -16,6 +16,7 @@ export default function Register() {
   const [agreed, setAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDuplicatedID, setIsDuplicatedID] = useState(false);
+  const [isAgreeRequired, setIsAgreeRequired] = useState(false);
   const [isError, setIsError] = useState(false);
   const { login } = useAuthStore();
   const router = useRouter();
@@ -23,18 +24,18 @@ export default function Register() {
   const initState = () =>{
     setIsLoading(true);
     setIsDuplicatedID(false);
+    setIsAgreeRequired(false);
     setIsError(false);
   }
 
   // native 회원가입 핸들러
   const handleRegister = async (id: string, email: string, password: string) => {
     if (!agreed) {
-      // todo: 동의 스위치 하이라이트
+      setIsAgreeRequired(true);
       return;
     }
     const registerResult = await NativeRegister({ id: id, email: email, password: password });
     if (registerResult.success) {
-      // todo: 가입 성공 화면 추가
       const authResult = await NativeAuth({ id: id, password: password });
       login(authResult.jwt_token as string, authResult.id as string, "native");
       router.push('/');
@@ -138,6 +139,9 @@ export default function Register() {
         <div className="text-pink-600 text-sm mt-1">
           <p className={classNames(isDuplicatedID ? "" : "hidden")}>
             이미 사용중인 아이디 입니다.
+          </p>
+          <p className={classNames(isAgreeRequired ? "" : "hidden")}>
+            개인정보 수집에 동의해주세요.
           </p>
           <p className={classNames(isError ? "" : "hidden")}>
             회원가입에 실패했습니다.
