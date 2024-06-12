@@ -26,7 +26,7 @@ next.js 기반의 프로젝트입니다.
 
 ### 요구사항
 
-- node.js 18.17 이상 [다운로드](https://nodejs.org/en)
+- node.js 18.17 이상 [(다운로드)](https://nodejs.org/en)
 
 ### 빌드
 
@@ -49,7 +49,7 @@ $ npm install
 `.env.local` 파일 생성
 
 ```bash
-NEXT_PUBLIC_API_KEY= "API_KEY"
+NEXT_PUBLIC_FIREBASE_API_KEY= "FIREBASE_API_KEY"
 NEXT_PUBLIC_AUTH_DOMAIN= "AUTH_DOMAIN"
 NEXT_PUBLIC_DATABASE_URL= "DATABASE_URL"
 NEXT_PUBLIC_PROJECT_ID= "PROJECT_ID"
@@ -63,6 +63,7 @@ NEXT_PUBLIC_KAKAO_API_KEY= "KAKAO_CLIENT_ID"
 ```
 
 `.env.local` 파일에 위 값들을 입력하여 root 디렉토리에 위치시켜야함<br>
+1~8행은 Firebase App 설정에 따름 [(참고)](https://yzlosmik.tistory.com/160)<br>
 `NEXT_PUBLIC_API_URL`에 `http://localhost:3000`입력하여 로컬에서 실행<br>
 `NEXT_PUBLIC_SERVER_URL`필드에는 프론트엔드 서버의 root 주소(`http://localhost:3000` 등)지정
 
@@ -204,4 +205,6 @@ chatbotStorage {
 [오픈소스 이미지](https://unsplash.com/ko)<br>
 [Tailwind CSS](https://tailwindui.com)<br>
 [Flowbite React](https://flowbite-react.com/)<br>
+[Heroicons](https://heroicons.com/)<br>
+[Headless UI](https://headlessui.com/)<br>
 [Customized Scrollbar](https://www.geeksforgeeks.org/how-to-change-style-of-scrollbar-using-tailwind-css/)<br>
