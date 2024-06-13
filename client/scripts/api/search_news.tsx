@@ -38,7 +38,7 @@ async function SearchNews(query: string): Promise<SearchResult> {
             return { status: response.status };
         }
         // Debug
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const searchResult = response.data;
         searchResult.status = response.status;
