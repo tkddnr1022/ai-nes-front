@@ -41,12 +41,12 @@ export default function Login() {
             default:
                 throw new Error('Unsupported authentication provider');
         }
-        if (authResult.status == 201) {
+        console.log(authResult);
+        if (authResult.status == 201 && authResult.jwt_token) {
             login(authResult.jwt_token as string, authResult.id as string, authResult.provider as string);
             router.push('/');
         } else {
             setIsLoginFail(true);
-            if (authResult.error) console.error(authResult.error);
         }
         setIsLoaded(true);
     };

@@ -37,7 +37,16 @@ async function GetArticle(date: Date, index: number): Promise<GetArticleResult> 
         return getArticleResult;
     } catch (err) {
         console.error(err);
-        return { status: 500 };
+        if (axios.isAxiosError(err)) {
+            return {
+                status: err.response?.status as number
+            };
+        }
+        else {
+            return {
+                status: 500
+            };
+        }
     }
 }
 
@@ -61,7 +70,16 @@ async function GetArticles(date?: Date): Promise<GetArticlesResult> {
         return getArticlesResult;
     } catch (err) {
         console.error(err);
-        return { status: 500 };
+        if (axios.isAxiosError(err)) {
+            return {
+                status: err.response?.status as number
+            };
+        }
+        else {
+            return {
+                status: 500
+            };
+        }
     }
 }
 
