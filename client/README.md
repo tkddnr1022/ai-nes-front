@@ -4,7 +4,8 @@ next.js 기반의 프로젝트입니다.
 
 ## 목차
 - [설치](#설치)
-  * [요구사항](#요구사항)
+  * [요구 사항](#요구사항)
+  * [사전 설정](#사전-설정)
   * [빌드](#빌드)
     + [1. 프로젝트 폴더로 이동](#1-프로젝트-폴더로-이동)
     + [2. 패키지 설치](#2-패키지-설치)
@@ -28,9 +29,14 @@ next.js 기반의 프로젝트입니다.
 
 - node.js 18.17 이상 [(다운로드)](https://nodejs.org/en)
 
+### 사전 설정
+
+- 파이어베이스 앱 설정의 Authentication-도메인-승인된 도메인에 프론트엔드 도메인 추가
+- 카카오 앱 설정에서 Redirect URI 에 `{프론트엔드 도메인}/login/kakao` 추가
+
 ### 빌드
 
-`/client` 디렉토리로 이동후 npm 패키지 설치와 환경변수 파일 생성을 마치면 실행 가능합니다.
+`/client` 디렉토리로 이동후 npm 패키지 설치와 환경변수 파일 생성을 마치면 빌드 가능합니다.
 
 #### 1. 프로젝트 폴더로 이동
 
@@ -64,8 +70,8 @@ NEXT_PUBLIC_KAKAO_API_KEY= "KAKAO_CLIENT_ID"
 
 `.env.local` 파일에 위 값들을 입력하여 root 디렉토리에 위치시켜야함<br>
 1~8행은 Firebase App 설정에 따름 [(참고)](https://yzlosmik.tistory.com/160)<br>
-`NEXT_PUBLIC_API_URL`에 `http://localhost:3000`입력하여 로컬에서 실행<br>
-`NEXT_PUBLIC_SERVER_URL`필드에는 프론트엔드 서버의 root 주소(`http://localhost:3000` 등)지정
+로컬에서 테스트하고자 할 경우 `NEXT_PUBLIC_API_URL`에 `http://localhost:3000`입력<br>
+`NEXT_PUBLIC_SERVER_URL`필드에는 프론트엔드 서버의 root 주소(`http://localhost:3000` 등)지정<br>
 
 #### 4. Dev 빌드 실행
 
