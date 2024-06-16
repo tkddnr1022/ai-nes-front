@@ -15,11 +15,11 @@ const useAuthStore = create(persist<AuthState>((set) => ({
     provider: null,
     login: (token, userId, prov) => {
         set({ jwt_token: token, id: userId, provider: prov});
-        //window.location.reload();
+        window.location.reload();
     },
     logout: () => {
         set({ jwt_token: null, id: null, provider: null});
-        //window.location.reload();
+        window.location.reload();
     },
 }), {
     name: 'authStorage'
