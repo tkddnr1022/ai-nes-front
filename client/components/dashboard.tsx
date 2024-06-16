@@ -2,9 +2,9 @@ import { ArrowRightCircleIcon } from "@heroicons/react/20/solid"
 
 const links = [
     { name: '기사 모아보기', href: './list' },
-    { name: '개발 문서', href: '#' },
     { name: '팀 소개', href: './about' },
-    { name: 'Github', href: 'https://github.com/jchanho99/AI_NES' },
+    { name: 'Notion', href: 'https://www.notion.so/48c878dfb8bb46a794824a4c8c0af179?v=4ff98628bf51488d8c8d9152f5378d14&pvs=4' },
+    { name: 'GitHub', href: 'https://github.com/jchanho99/AI_NES' },
 ]
 
 export default function Dashboard() {
