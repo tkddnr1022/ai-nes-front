@@ -6,6 +6,8 @@ next.js 기반의 프로젝트입니다.
 - [설치](#설치)
   * [요구 사항](#요구사항)
   * [사전 설정](#사전-설정)
+    + [파이어베이스 연동](#파이어베이스-연동)
+    + [카카오 로그인 연동](#카카오-로그인-연동)
   * [빌드](#빌드)
     + [1. 프로젝트 폴더로 이동](#1-프로젝트-폴더로-이동)
     + [2. 패키지 설치](#2-패키지-설치)
@@ -31,8 +33,16 @@ next.js 기반의 프로젝트입니다.
 
 ### 사전 설정
 
-- 파이어베이스 앱 설정의 Authentication-도메인-승인된 도메인에 프론트엔드 도메인 추가
-- 카카오 앱 설정에서 Redirect URI 에 `{프론트엔드 도메인}/login/kakao` 추가
+#### 파이어베이스 연동
+- 파이어베이스 앱 설정의 Authentication->로그인 방법->제공업체에 Google 추가
+- 파이어베이스 앱 설정의 Authentication->설정->도메인->승인된 도메인에 프론트엔드 도메인 추가
+
+[참고 링크](https://ilimes.github.io/web/post37/)
+
+#### 카카오 로그인 연동
+- 카카오 앱 설정에서 Redirect URI 에 `{프론트엔드 도메인}/login/kakao` 추가 
+
+[참고 링크](https://developers.kakao.com/docs/latest/ko/kakaologin/prerequisite#kakao-login-redirect-uri)
 
 ### 빌드
 
@@ -70,8 +80,9 @@ NEXT_PUBLIC_KAKAO_API_KEY= "KAKAO_CLIENT_ID"
 
 `.env.local` 파일에 위 값들을 입력하여 root 디렉토리에 위치시켜야함<br>
 1~8행은 Firebase App 설정에 따름 [(참고)](https://yzlosmik.tistory.com/160)<br>
-로컬에서 테스트하고자 할 경우 `NEXT_PUBLIC_API_URL`에 `http://localhost:3000`입력<br>
-`NEXT_PUBLIC_SERVER_URL`필드에는 프론트엔드 서버의 root 주소(`http://localhost:3000` 등)지정<br>
+- `NEXT_PUBLIC_API_URL` : 백엔드 서버 주소 입력 혹은 테스트 빌드시 `http://localhost:3000`입력
+- `NEXT_PUBLIC_SERVER_URL` : 프론트엔드 서버 주소 입력
+- `NEXT_PUBLIC_KAKAO_API_KEY` : 카카오 로그인 APP KEY 입력 [(참고)](https://notspoon.tistory.com/34)
 
 #### 4. Dev 빌드 실행
 
@@ -125,23 +136,25 @@ Error: Invalid rewrite found
 ### 라우터
 
 - app(localhost:3000)
-  - about
-  - ~~api(for dev)~~
-    - ~~getData~~
-  - article
-    - [date]
+  * about
+  * ~~api(for dev)~~
+    + ~~getData~~
+  * article
+    + [date]
       - [id]
-  - ~~auth(for dev)~~
-    - ~~getToken~~
-    - ~~getUser~~
-    - ~~login~~
-    - ~~logout~~
-    - ~~signup~~
-  - list
-  - login
-    - kakao
-  - ~~search(for dev)~~
-    - ~~news~~
+  * ~~auth(for dev)~~
+    + ~~getToken~~
+    + ~~getUser~~
+    + ~~login~~
+    + ~~logout~~
+    + ~~signup~~
+  * list
+  * login
+    + kakao
+  * ~~search(for dev)~~
+    + ~~news~~
+
+[3. 환경변수 파일 생성](#3-환경변수-파일-생성) 에서 `NEXT_PUBLIC_API_URL`을 로컬호스트로 설정 시 테스트 라우터들이 사용됨
 
 ### 컴포넌트
 
