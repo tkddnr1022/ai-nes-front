@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getIdToken, signInWithPopup } from "firebase/auth";
 import { FirebaseAuth } from "../config_firebase";
 import axios from "axios";
 
@@ -101,14 +101,25 @@ async function GoogleAuth(): Promise<AuthResult> {
     const provider = new GoogleAuthProvider();
     try {
         const data = await signInWithPopup(FirebaseAuth, provider);
+        const token = await data.user.getIdToken();
         // Debug
-        console.log(data);
+        // console.log(data);
 
-        // 백엔드로부터 auth 얻는 코드 필요
+        const response = await axios.post<string>("service/auth/save", {
+            id: data.user.uid,
+            email: data.user.email,
+            token: token
+        })
+
+        if (response.status != 201) {
+            console.log(response);
+            return { status: response.status };
+        }
+
         const authResult: AuthResult = {
             status: 201,
-            jwt_token: "sample_token",
-            id: "sample_id",
+            jwt_token: response.data,
+            id: data.user.uid,
             provider: "google"
         }
         return authResult;

@@ -41,7 +41,6 @@ export default function Login() {
             default:
                 throw new Error('Unsupported authentication provider');
         }
-        console.log(authResult);
         if (authResult.status == 201 && authResult.jwt_token) {
             login(authResult.jwt_token as string, authResult.id as string, authResult.provider as string);
             router.push('/');
