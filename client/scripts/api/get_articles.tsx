@@ -54,7 +54,7 @@ async function GetArticles(date?: Date): Promise<GetArticlesResult> {
     try {
         const response = date? await axios.post<Article[]>("/service/api/getData", { date: date ? formatDateDB(date) : undefined }) : 
         await axios.get<Article[]>("/service/api/getData")
-        if (response.status != 201 || response.data == null) {
+        if (response.data == null) {
             return { status: response.status };
         }
 
